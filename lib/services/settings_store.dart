@@ -82,7 +82,8 @@ class SettingsStore extends ChangeNotifier {
     } catch (_) {}
   }
 
-  Future<String> _resolve(SharedPreferences? p, String key, String legacy) async {
+  Future<String> _resolve(
+      SharedPreferences? p, String key, String legacy) async {
     final secure = await _secrets.read(key) ?? '';
     if (secure.isNotEmpty) {
       // الآمن هو المرجع. لو لسه فيه نسخة قديمة نظيفها.

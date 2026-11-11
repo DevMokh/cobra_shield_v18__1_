@@ -11,10 +11,33 @@ class UrlCleaner {
   UrlCleaner._();
 
   static const Set<String> _exact = <String>{
-    'fbclid', 'gclid', 'dclid', 'gbraid', 'wbraid', 'msclkid', 'yclid',
-    'igshid', 'igsh', 'mc_cid', 'mc_eid', '_ga', '_gl', 'ref', 'ref_src',
-    'ref_url', 'si', 'spm', 'vero_id', 'mkt_tok', 'twclid', 'ttclid',
-    's_cid', 'cmpid', 'trk', 'oly_enc_id', 'oly_anon_id',
+    'fbclid',
+    'gclid',
+    'dclid',
+    'gbraid',
+    'wbraid',
+    'msclkid',
+    'yclid',
+    'igshid',
+    'igsh',
+    'mc_cid',
+    'mc_eid',
+    '_ga',
+    '_gl',
+    'ref',
+    'ref_src',
+    'ref_url',
+    'si',
+    'spm',
+    'vero_id',
+    'mkt_tok',
+    'twclid',
+    'ttclid',
+    's_cid',
+    'cmpid',
+    'trk',
+    'oly_enc_id',
+    'oly_anon_id',
   };
 
   static final RegExp _scheme =

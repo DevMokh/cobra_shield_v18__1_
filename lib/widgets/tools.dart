@@ -43,7 +43,8 @@ Widget _toolTitle(IconData icon, String title, String sub) {
               const SizedBox(height: 2),
               Text(
                 sub,
-                style: const TextStyle(color: C.muted, fontSize: 12.5, height: 1.4),
+                style: const TextStyle(
+                    color: C.muted, fontSize: 12.5, height: 1.4),
               ),
             ],
           ),
@@ -119,7 +120,9 @@ class _StrengthToolState extends State<StrengthTool> {
               hint: 'اكتب كلمة سر للتجربة',
               suffix: IconButton(
                 icon: Icon(
-                  _hide ? Icons.visibility_rounded : Icons.visibility_off_rounded,
+                  _hide
+                      ? Icons.visibility_rounded
+                      : Icons.visibility_off_rounded,
                   color: C.muted,
                 ),
                 onPressed: () => setState(() => _hide = !_hide),
@@ -405,7 +408,8 @@ class _CleanerToolState extends State<CleanerTool> {
             maxLines: 4,
             style: const TextStyle(
                 fontFamily: 'monospace', color: C.text, fontSize: 13.5),
-            decoration: fieldDecoration(hint: 'https://site.com/page?utm_source=...'),
+            decoration:
+                fieldDecoration(hint: 'https://site.com/page?utm_source=...'),
           ),
           const SizedBox(height: 10),
           Row(
@@ -463,7 +467,8 @@ class _CleanerToolState extends State<CleanerTool> {
                 r.removed.isEmpty
                     ? 'لا توجد متتبعات معروفة في هذا الرابط.'
                     : 'تم حذف ${r.removed.length}: ${r.removed.join('، ')}',
-                style: const TextStyle(color: C.muted, fontSize: 12.5, height: 1.4),
+                style: const TextStyle(
+                    color: C.muted, fontSize: 12.5, height: 1.4),
               ),
               const SizedBox(height: 4),
               Text(
@@ -476,7 +481,8 @@ class _CleanerToolState extends State<CleanerTool> {
               ),
               const SizedBox(height: 8),
               OutlinedButton.icon(
-                onPressed: () => _copy(context, r.cleaned, 'تم نسخ الرابط النظيف'),
+                onPressed: () =>
+                    _copy(context, r.cleaned, 'تم نسخ الرابط النظيف'),
                 style: outlineButtonStyle(),
                 icon: const Icon(Icons.copy_rounded, size: 18),
                 label: const Text('نسخ الرابط النظيف'),
@@ -585,7 +591,8 @@ class _HashToolState extends State<HashTool> {
                     ),
                   ),
                   IconButton(
-                    icon: const Icon(Icons.copy_rounded, color: C.muted, size: 18),
+                    icon: const Icon(Icons.copy_rounded,
+                        color: C.muted, size: 18),
                     onPressed: () => _copy(context, e.value, 'تم نسخ ${e.key}'),
                   ),
                 ],
@@ -657,7 +664,8 @@ class SettingsPanel extends StatelessWidget {
                 ),
                 subtitle: Text(
                   tr(S.languageHint),
-                  style: const TextStyle(color: C.muted, fontSize: 12, height: 1.4),
+                  style: const TextStyle(
+                      color: C.muted, fontSize: 12, height: 1.4),
                 ),
                 secondary: const Icon(Icons.language_rounded, color: C.emerald),
               ),

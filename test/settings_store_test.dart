@@ -48,7 +48,8 @@ void main() {
     expect(s.keysSecure, isTrue);
   });
 
-  test('ترحيل المفاتيح القديمة للتخزين الآمن ومسحها من SharedPreferences', () async {
+  test('ترحيل المفاتيح القديمة للتخزين الآمن ومسحها من SharedPreferences',
+      () async {
     SharedPreferences.setMockInitialValues(<String, Object>{
       _gsb: 'old-gsb-key',
       _vt: 'old-vt-key',
@@ -66,8 +67,10 @@ void main() {
     expect(p.containsKey(_vt), isFalse);
   });
 
-  test('لو الكتابة الآمنة فشلت: النسخة القديمة تفضل ومحدش يخسر المفتاح', () async {
-    SharedPreferences.setMockInitialValues(<String, Object>{_gsb: 'old-gsb-key'});
+  test('لو الكتابة الآمنة فشلت: النسخة القديمة تفضل ومحدش يخسر المفتاح',
+      () async {
+    SharedPreferences.setMockInitialValues(
+        <String, Object>{_gsb: 'old-gsb-key'});
     final secrets = _FakeSecrets()..failWrites = true;
     final s = SettingsStore.forTest(secrets);
     await s.load();
@@ -77,7 +80,8 @@ void main() {
     expect(p.getString(_gsb), 'old-gsb-key');
   });
 
-  test('لو التخزين بيبلع الكتابة (فشل تحقق): النسخة القديمة ما بتتمسحش', () async {
+  test('لو التخزين بيبلع الكتابة (فشل تحقق): النسخة القديمة ما بتتمسحش',
+      () async {
     SharedPreferences.setMockInitialValues(<String, Object>{_vt: 'old-vt-key'});
     final secrets = _FakeSecrets()..dropWrites = true;
     final s = SettingsStore.forTest(secrets);
@@ -89,7 +93,8 @@ void main() {
   });
 
   test('لو القراءة الآمنة فشلت: نكمل بالقديم من غير مسح', () async {
-    SharedPreferences.setMockInitialValues(<String, Object>{_gsb: 'old-gsb-key'});
+    SharedPreferences.setMockInitialValues(
+        <String, Object>{_gsb: 'old-gsb-key'});
     final secrets = _FakeSecrets()..failReads = true;
     final s = SettingsStore.forTest(secrets);
     await s.load();
@@ -134,7 +139,8 @@ void main() {
     expect(s.gsbKey, '');
   });
 
-  test('لو الحفظ الآمن فشل: false، المفتاح للجلسة بس، وملوش نسخة نص عادي', () async {
+  test('لو الحفظ الآمن فشل: false، المفتاح للجلسة بس، وملوش نسخة نص عادي',
+      () async {
     SharedPreferences.setMockInitialValues(<String, Object>{});
     final secrets = _FakeSecrets();
     final s = SettingsStore.forTest(secrets);

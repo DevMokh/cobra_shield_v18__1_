@@ -82,8 +82,7 @@ class MessageAnalyzer {
   static final RegExp _inputAr = RegExp(kInputVerbsAr);
   static final RegExp _inputEn = RegExp(kInputVerbsEn);
   static final RegExp _sentenceSplit = RegExp(r'[.!?؟\n\r;؛]+');
-  static final RegExp _wordToken =
-      RegExp(r'[a-zء-ي٠-٩۰-۹]{2,}|\d{2,}');
+  static final RegExp _wordToken = RegExp(r'[a-zء-ي٠-٩۰-۹]{2,}|\d{2,}');
 
   static final RegExp _urlRe = RegExp(
     r'(?:(?:https?://|www\.)[^\s<>"]+)'
@@ -183,7 +182,8 @@ class MessageAnalyzer {
         code: 'msg_links_overflow',
         severity: Severity.warn,
         title: 'فيه روابط أكتر من $maxLinks ما اتفحصتش',
-        detail: 'فحصنا أول $maxLinks روابط بس. الروابط الزيادة غير مفحوصة، فلا تفتحها.',
+        detail:
+            'فحصنا أول $maxLinks روابط بس. الروابط الزيادة غير مفحوصة، فلا تفتحها.',
       ));
     }
 
@@ -259,7 +259,8 @@ class MessageAnalyzer {
 
     // ---- طلب بيانات حساسة (بالسياق، مش بالكلمة) ----
     final secrets = _scanSecrets(norm);
-    final untrustedLink = scoredLinks.any((l) => !_isOfficial(l) && l.score >= 5);
+    final untrustedLink =
+        scoredLinks.any((l) => !_isOfficial(l) && l.score >= 5);
     List<String> requested = secrets.handOver;
     if (requested.isEmpty && secrets.input.isNotEmpty && untrustedLink) {
       requested = secrets.input;
@@ -312,7 +313,9 @@ class MessageAnalyzer {
         findings.add(Finding(
           code: 'msg_link_risk',
           severity: linkPts >= 25 ? Severity.danger : Severity.warn,
-          title: worst >= kBandMedium ? 'رابط مشبوه داخل الرسالة' : 'علامات ضعيفة في رابط داخل الرسالة',
+          title: worst >= kBandMedium
+              ? 'رابط مشبوه داخل الرسالة'
+              : 'علامات ضعيفة في رابط داخل الرسالة',
           detail: 'أخطر رابط حصل على $worst/100. راجع تفاصيل الروابط بالأسفل.',
           points: linkPts,
           // رابط درجته أقل من "مشبوه" بيتحسب كإشارة ضعيفة (مجموعها محدود).
@@ -323,12 +326,14 @@ class MessageAnalyzer {
           code: 'msg_link_present',
           severity: Severity.info,
           title: 'الرسالة تحتوي ${scoredLinks.length} رابط',
-          detail: 'لم نجد علامات واضحة في الروابط، لكن لا تفتحها إلا لو كنت تتوقعها.',
+          detail:
+              'لم نجد علامات واضحة في الروابط، لكن لا تفتحها إلا لو كنت تتوقعها.',
         ));
       }
     }
     // رابط + ضغط نفسي (استعجال/تهديد/جائزة/طلب بيانات/دفع...) لوجهة مش رسمية.
-    final allOfficial = scoredLinks.isNotEmpty && scoredLinks.every(_isOfficial);
+    final allOfficial =
+        scoredLinks.isNotEmpty && scoredLinks.every(_isOfficial);
     if (links.isNotEmpty && strongHit.isNotEmpty && !allOfficial) {
       findings.add(const Finding(
         code: 'msg_link_pressure',
@@ -367,7 +372,8 @@ class MessageAnalyzer {
         detail:
             'الرسالة كلمات قليلة بدون روابط، فلا نقدر نقول إنها بلا مؤشرات. أضف باقي الرسالة أو تحقق من المرسل.',
       ));
-    } else if (!findings.any((f) => f.points > 0 || f.severity != Severity.info)) {
+    } else if (!findings
+        .any((f) => f.points > 0 || f.severity != Severity.info)) {
       findings.add(const Finding(
         code: 'msg_no_indicators',
         severity: Severity.good,

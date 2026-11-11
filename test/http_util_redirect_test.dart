@@ -34,7 +34,8 @@ void main() {
     await server.close(force: true);
   });
 
-  Uri url([String path = '/']) => Uri.parse('https://localhost:${server.port}$path');
+  Uri url([String path = '/']) =>
+      Uri.parse('https://localhost:${server.port}$path');
 
   Future<void> redirect(HttpRequest req, String to, {int code = 302}) async {
     req.response.statusCode = code;
@@ -84,7 +85,8 @@ void main() {
   });
 
   test('تحويلة لعنوان metadata مرفوضة من غير اتصال', () async {
-    handler = (req) => redirect(req, 'https://169.254.169.254/latest/meta-data/');
+    handler =
+        (req) => redirect(req, 'https://169.254.169.254/latest/meta-data/');
     await expectLater(
       httpRequest('GET', url()),
       throwsA(isA<BlockedTargetException>()),

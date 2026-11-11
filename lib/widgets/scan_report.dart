@@ -131,7 +131,8 @@ class FindingTile extends StatelessWidget {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(severityIcon(finding.severity), color: c, size: 22),
+                        Icon(severityIcon(finding.severity),
+                            color: c, size: 22),
                         const SizedBox(width: 10),
                         Expanded(
                           child: Column(
@@ -221,7 +222,8 @@ class UrlBreakdown extends StatelessWidget {
         children: [
           SizedBox(
             width: 112,
-            child: Text(k, style: const TextStyle(color: C.muted, fontSize: 12.5)),
+            child:
+                Text(k, style: const TextStyle(color: C.muted, fontSize: 12.5)),
           ),
           Expanded(
             child: Directionality(

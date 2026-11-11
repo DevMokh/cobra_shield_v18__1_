@@ -78,7 +78,8 @@ class NetGuard {
       host = host.substring(0, host.length - 1);
     }
     if (host.isEmpty) return 'الرابط بدون اسم موقع.';
-    if (_badHostChars.hasMatch(host)) return 'اسم الموقع يحتوي رموزًا غير مقبولة.';
+    if (_badHostChars.hasMatch(host))
+      return 'اسم الموقع يحتوي رموزًا غير مقبولة.';
 
     // IPv6 حرفي (Uri.host بيشيل الأقواس)
     if (host.contains(':')) {
@@ -121,11 +122,13 @@ class NetGuard {
     if (b0 == 10) return true; // 10/8
     if (b0 == 100 && (b1 & 0xC0) == 64) return true; // 100.64/10 (CGNAT)
     if (b0 == 127) return true; // loopback
-    if (b0 == 169 && b1 == 254) return true; // link-local + metadata 169.254.169.254
+    if (b0 == 169 && b1 == 254)
+      return true; // link-local + metadata 169.254.169.254
     if (b0 == 172 && (b1 & 0xF0) == 16) return true; // 172.16/12
     if (b0 == 192 && b1 == 0 && b2 == 0) return true; // 192.0.0.0/24
     if (b0 == 192 && b1 == 0 && b2 == 2) return true; // TEST-NET-1
-    if (b0 == 192 && b1 == 88 && b2 == 99) return true; // 6to4 relay (deprecated)
+    if (b0 == 192 && b1 == 88 && b2 == 99)
+      return true; // 6to4 relay (deprecated)
     if (b0 == 192 && b1 == 168) return true; // 192.168/16
     if (b0 == 198 && (b1 & 0xFE) == 18) return true; // 198.18/15
     if (b0 == 198 && b1 == 51 && b2 == 100) return true; // TEST-NET-2
@@ -155,12 +158,16 @@ class NetGuard {
       if (zeros(4, 12)) return _blockedV4(b[12], b[13], b[14], b[15]);
       if (b[4] == 0x00 && b[5] == 0x01) return true;
     }
-    if (b[0] == 0xfe && (b[1] & 0xC0) == 0x80) return true; // fe80::/10 link-local
-    if (b[0] == 0xfe && (b[1] & 0xC0) == 0xC0) return true; // fec0::/10 site-local
+    if (b[0] == 0xfe && (b[1] & 0xC0) == 0x80)
+      return true; // fe80::/10 link-local
+    if (b[0] == 0xfe && (b[1] & 0xC0) == 0xC0)
+      return true; // fec0::/10 site-local
     if ((b[0] & 0xFE) == 0xFC) return true; // fc00::/7 ULA
     if (b[0] == 0xff) return true; // multicast
-    if (b[0] == 0x20 && b[1] == 0x01 && b[2] == 0x0d && b[3] == 0xb8) return true; // docs
-    if (b[0] == 0x20 && b[1] == 0x01 && b[2] == 0x00 && b[3] == 0x00) return true; // Teredo
+    if (b[0] == 0x20 && b[1] == 0x01 && b[2] == 0x0d && b[3] == 0xb8)
+      return true; // docs
+    if (b[0] == 0x20 && b[1] == 0x01 && b[2] == 0x00 && b[3] == 0x00)
+      return true; // Teredo
     if (b[0] == 0x20 && b[1] == 0x02) {
       // 6to4: IPv4 مُضمَّن في البايتات 2..5
       return _blockedV4(b[2], b[3], b[4], b[5]);

@@ -74,7 +74,8 @@ class IntelTile extends StatelessWidget {
                 const SizedBox(height: 2),
                 Text(
                   result.message,
-                  style: const TextStyle(color: C.muted, fontSize: 12.5, height: 1.4),
+                  style: const TextStyle(
+                      color: C.muted, fontSize: 12.5, height: 1.4),
                 ),
               ],
             ),

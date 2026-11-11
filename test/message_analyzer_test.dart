@@ -12,7 +12,8 @@ void main() {
     });
 
     test('رابط مختصر من غير http', () {
-      final l = MessageAnalyzer.extractLinks('مبروك! اضغط هنا: bit.ly/3xYz12 الآن');
+      final l =
+          MessageAnalyzer.extractLinks('مبروك! اضغط هنا: bit.ly/3xYz12 الآن');
       expect(l, ['bit.ly/3xYz12']);
     });
 
@@ -56,14 +57,18 @@ void main() {
     });
 
     test('أكتر من 8 روابط: تحذير، والمفحوص 8 بس', () {
-      final text = List<String>.generate(10, (i) => 'https://site$i.example.com/p').join(' ');
+      final text =
+          List<String>.generate(10, (i) => 'https://site$i.example.com/p')
+              .join(' ');
       final r = MessageAnalyzer.analyze(text);
       expect(r.links.length, MessageAnalyzer.maxLinks);
       expect(hasTitle(r, 'روابط أكتر'), isTrue);
     });
 
     test('8 روابط بالظبط: مفيش تحذير', () {
-      final text = List<String>.generate(8, (i) => 'https://site$i.example.com/p').join(' ');
+      final text =
+          List<String>.generate(8, (i) => 'https://site$i.example.com/p')
+              .join(' ');
       final r = MessageAnalyzer.analyze(text);
       expect(r.links.length, 8);
       expect(hasTitle(r, 'روابط أكتر'), isFalse);
@@ -75,15 +80,14 @@ void main() {
   // (القيم المتوقعة اتحسبت يدويًا من kSignals والأوزان؛ أول تشغيل فعلي في الـ CI)
   // -------------------------------------------------------------------
 
-  Set<String> msgCodes(ScanResult r) => r.findings
-      .map((f) => f.code)
-      .where((c) => c.startsWith('msg_'))
-      .toSet();
+  Set<String> msgCodes(ScanResult r) =>
+      r.findings.map((f) => f.code).where((c) => c.startsWith('msg_')).toSet();
   int count(ScanResult r, String code) =>
       r.findings.where((f) => f.code == code).length;
 
   group('تكافؤ العربي والإنجليزي والمختلط', () {
-    test('تهديد + تحقق + استعجال: نفس الإشارات ونفس الدرجة بالعربي والإنجليزي', () {
+    test('تهديد + تحقق + استعجال: نفس الإشارات ونفس الدرجة بالعربي والإنجليزي',
+        () {
       final ar = MessageAnalyzer.analyze('تم إيقاف حسابك. تحقق من حسابك فورًا');
       final en = MessageAnalyzer.analyze(
           'Your account has been suspended. Verify your account immediately.');
@@ -114,7 +118,9 @@ void main() {
       expect(ar.score, 12);
     });
 
-    test('كلمات عامة (login / bank / invoice) إشارات ضعيفة: نفس الدرجة بالعربي والإنجليزي ومش "مشبوه"', () {
+    test(
+        'كلمات عامة (login / bank / invoice) إشارات ضعيفة: نفس الدرجة بالعربي والإنجليزي ومش "مشبوه"',
+        () {
       final en = MessageAnalyzer.analyze(
           'Please login to your bank account to view your invoice');
       final ar = MessageAnalyzer.analyze(
@@ -160,14 +166,17 @@ void main() {
       expect(r.verdict, Verdict.noIndicators);
     });
 
-    test('جملة تحذير فيها المصطلح الحساس نفسه: مش طلب، وبتظهر علامة إيجابية', () {
+    test('جملة تحذير فيها المصطلح الحساس نفسه: مش طلب، وبتظهر علامة إيجابية',
+        () {
       for (final t in <String>[
         'Never share your password. We will never ask for your password.',
         'لا تشارك كلمة المرور مع أي شخص. لن نطلب منك كلمة المرور أبدا',
       ]) {
         final r = MessageAnalyzer.analyze(t);
-        expect(r.findings.any((f) => f.code == 'msg_secret_request'), isFalse, reason: t);
-        expect(r.findings.any((f) => f.code == 'msg_secret_warning'), isTrue, reason: t);
+        expect(r.findings.any((f) => f.code == 'msg_secret_request'), isFalse,
+            reason: t);
+        expect(r.findings.any((f) => f.code == 'msg_secret_warning'), isTrue,
+            reason: t);
         expect(r.score, 0, reason: t);
       }
     });
@@ -205,7 +214,8 @@ void main() {
     });
 
     test('رابط بإشارات ضعيفة فقط ومن غير ضغط: لا يخلّي الرسالة مشبوهة', () {
-      final r = MessageAnalyzer.analyze('see http://example.xyz/ tomorrow at five');
+      final r =
+          MessageAnalyzer.analyze('see http://example.xyz/ tomorrow at five');
       expect(r.level, RiskLevel.low, reason: 'score=${r.score}');
       expect(r.findings.any((f) => f.code == 'msg_link_pressure'), isFalse);
       expect(r.verdict, Verdict.noIndicators);
@@ -237,7 +247,8 @@ void main() {
 
     test('LRM جوه كلمة مفتاحية ما بتخفيهاش عن المطابقة', () {
       // الكلمة الوحيدة المطابقة هنا هي "urgent" بعد ما LRM بيقطّعها: لازم تتلقط.
-      final r = MessageAnalyzer.analyze('this is an ur\u200Egent matter please');
+      final r =
+          MessageAnalyzer.analyze('this is an ur\u200Egent matter please');
       expect(count(r, 'msg_urgency'), 1);
     });
 

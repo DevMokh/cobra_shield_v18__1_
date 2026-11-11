@@ -108,9 +108,8 @@ class OcrService {
   static Future<OcrOutcome> extract(String path) async {
     String reason;
     try {
-      final Object? raw = await _channel
-          .invokeMethod<Object?>('recognize', <String, String>{'path': path})
-          .timeout(_tesseractTimeout);
+      final Object? raw = await _channel.invokeMethod<Object?>('recognize',
+          <String, String>{'path': path}).timeout(_tesseractTimeout);
       final t = _parse(raw);
       final tess = OcrOutcome(
         text: cleanOcrText(t.text),

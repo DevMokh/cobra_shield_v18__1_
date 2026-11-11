@@ -173,7 +173,8 @@ void main() {
       expect(r.spaceInAuthority, isTrue);
     });
     test('مسافة في المسار بتتحول %20 في رابط الاتصال', () {
-      expect(n('https://example.com/a b').fetchUrl, 'https://example.com/a%20b');
+      expect(
+          n('https://example.com/a b').fetchUrl, 'https://example.com/a%20b');
     });
     test('شرطة معكوسة', () {
       final r = n('https://example.com\\path');
@@ -258,7 +259,8 @@ void main() {
       ip('3232235777', '192.168.1.1', IpForm.dword, radix: <String>[]);
       ip('0177.0.0.1', '127.0.0.1', IpForm.radix, radix: <String>['octal']);
       ip('0x7f.0.0.1', '127.0.0.1', IpForm.radix, radix: <String>['hex']);
-      ip('0x7f.0.0.01', '127.0.0.1', IpForm.radix, radix: <String>['hex', 'octal']);
+      ip('0x7f.0.0.01', '127.0.0.1', IpForm.radix,
+          radix: <String>['hex', 'octal']);
       ip('127.1', '127.0.0.1', IpForm.short);
       ip('10.1.258', '10.1.1.2', IpForm.short);
       ip('017700000001', '127.0.0.1', IpForm.dword, radix: <String>['octal']);
@@ -375,7 +377,8 @@ void main() {
     });
     test('حروف عريضة ومزخرفة بتتحول زي المتصفح', () {
       const full = 'ｐａｙｐａｌ'; // ｐａｙｐａｌ
-      const bold = '\u{1D429}\u{1D41A}\u{1D432}\u{1D429}\u{1D41A}\u{1D425}'; // 𝐩𝐚𝐲𝐩𝐚𝐥
+      const bold =
+          '\u{1D429}\u{1D41A}\u{1D432}\u{1D429}\u{1D41A}\u{1D425}'; // 𝐩𝐚𝐲𝐩𝐚𝐥
       for (final h in <String>[full, bold]) {
         final r = n('https://$h.com');
         expect(r.host, 'paypal.com');

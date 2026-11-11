@@ -22,9 +22,22 @@ class UrlAnalyzer {
 
   static final RegExp _embedded = RegExp(r'https?://', caseSensitive: false);
   static const List<String> _credWords = <String>[
-    'login', 'log-in', 'signin', 'sign-in', 'verify', 'verification', 'secure',
-    'password', 'passwd', 'otp', 'confirm', 'validate', 'authenticate',
-    'unlock', 'recover', 'restore',
+    'login',
+    'log-in',
+    'signin',
+    'sign-in',
+    'verify',
+    'verification',
+    'secure',
+    'password',
+    'passwd',
+    'otp',
+    'confirm',
+    'validate',
+    'authenticate',
+    'unlock',
+    'recover',
+    'restore',
   ];
   static final RegExp _redirectValue =
       RegExp(r'^(https?:)?//', caseSensitive: false);
@@ -57,7 +70,9 @@ class UrlAnalyzer {
 
   /// نطاق إقليمي لعلامة كبيرة (google.de / amazon.co.uk): label.cctld
   static Brand? _regionalOf(String domain, String tld) {
-    if (tld.length != 2 || kRiskyTlds.contains(tld) || kAbusedCc.contains(tld)) {
+    if (tld.length != 2 ||
+        kRiskyTlds.contains(tld) ||
+        kAbusedCc.contains(tld)) {
       return null;
     }
     final label = domain.split('.').first;
@@ -236,8 +251,7 @@ class UrlAnalyzer {
       final m = PublicSuffixList.instance
           .lookup(n.unicodeHost.isEmpty ? host : n.unicodeHost);
       if (m != null && m.labels.length == labels.length) {
-        publicSuffix =
-            labels.sublist(labels.length - m.suffixLength).join('.');
+        publicSuffix = labels.sublist(labels.length - m.suffixLength).join('.');
         if (m.hasRegistrable) {
           registrable =
               labels.sublist(labels.length - m.suffixLength - 1).join('.');
@@ -403,7 +417,8 @@ class UrlAnalyzer {
             code: 'many_subdomains',
             severity: Severity.warn,
             title: 'مستويات فرعية كثيرة ($extra)',
-            detail: 'كثرة النقاط في الدومين تُستخدم لدفن الاسم الحقيقي في آخر الرابط.',
+            detail:
+                'كثرة النقاط في الدومين تُستخدم لدفن الاسم الحقيقي في آخر الرابط.',
             points: UrlWeights.manySubdomains,
           ));
         } else if (extra == 2) {
@@ -412,7 +427,8 @@ class UrlAnalyzer {
             severity: Severity.info,
             family: kFamilyWeak,
             title: 'دومين فرعي متعدد',
-            detail: 'اقرأ الدومين من اليمين: الجزء الأخير قبل أول "/" هو الأهم.',
+            detail:
+                'اقرأ الدومين من اليمين: الجزء الأخير قبل أول "/" هو الأهم.',
             points: 3,
           ));
         }
@@ -434,7 +450,8 @@ class UrlAnalyzer {
             severity: Severity.info,
             family: kFamilyWeak,
             title: 'اسم دومين طويل',
-            detail: 'الأسماء الطويلة قد تُستخدم لإخفاء الجزء المهم، لكنها وحدها مش دليل.',
+            detail:
+                'الأسماء الطويلة قد تُستخدم لإخفاء الجزء المهم، لكنها وحدها مش دليل.',
             points: 2,
           ));
         }
@@ -452,7 +469,8 @@ class UrlAnalyzer {
             code: 'official_domain',
             severity: Severity.good,
             title: 'الدومين رسمي: ${official.name}',
-            detail: '"$domain" ضمن الدومينات الرسمية المعروفة لـ ${official.name}.',
+            detail:
+                '"$domain" ضمن الدومينات الرسمية المعروفة لـ ${official.name}.',
           ));
         }
       }
@@ -476,10 +494,8 @@ class UrlAnalyzer {
     var credHits = <String>[];
     if (official == null || freeHost) {
       final hay = '$brandHost ${n.path} ${n.query}'.toLowerCase();
-      final tokens = hay
-          .split(RegExp(r'[^a-z0-9]+'))
-          .where((t) => t.isNotEmpty)
-          .toList();
+      final tokens =
+          hay.split(RegExp(r'[^a-z0-9]+')).where((t) => t.isNotEmpty).toList();
       final hits = kUrlWords.where((w) => _wordHit(hay, tokens, w)).toList();
       credHits = hits.where(_credWords.contains).toList();
       if (hits.length >= 3 && credHits.isNotEmpty) {
@@ -487,7 +503,8 @@ class UrlAnalyzer {
           code: 'keyword_stuffing',
           severity: Severity.warn,
           title: 'كلمات حساسة كثيرة',
-          detail: 'وُجدت: ${hits.take(5).join(', ')}. صفحات الاحتيال تحشر هذه الكلمات لإقناعك.',
+          detail:
+              'وُجدت: ${hits.take(5).join(', ')}. صفحات الاحتيال تحشر هذه الكلمات لإقناعك.',
           points: UrlWeights.keywordStuffing,
         ));
       } else if (hits.isNotEmpty) {
@@ -534,7 +551,9 @@ class UrlAnalyzer {
           ));
         }
       }
-      if (official == null && !freeHost && _looksRandom(domain.split('.').first)) {
+      if (official == null &&
+          !freeHost &&
+          _looksRandom(domain.split('.').first)) {
         f.add(const Finding(
           code: 'random_domain',
           severity: Severity.warn,
@@ -573,7 +592,8 @@ class UrlAnalyzer {
         severity: Severity.info,
         family: kFamilyWeak,
         title: 'رابط طويل جدًا',
-        detail: 'الطول الزائد قد يُستخدم لإخفاء الجزء المهم، لكنه شائع في روابط التتبع السليمة.',
+        detail:
+            'الطول الزائد قد يُستخدم لإخفاء الجزء المهم، لكنه شائع في روابط التتبع السليمة.',
         points: 4,
       ));
     } else if (raw.length > 100) {
@@ -592,7 +612,8 @@ class UrlAnalyzer {
         severity: Severity.info,
         family: kFamilyWeak,
         title: 'ترميز كثيف (%)',
-        detail: 'الترميز الكثيف قد يُستخدم لتمويه محتوى الرابط (وفي روابط عربية سليمة كتير أيضًا).',
+        detail:
+            'الترميز الكثيف قد يُستخدم لتمويه محتوى الرابط (وفي روابط عربية سليمة كتير أيضًا).',
         points: 3,
       ));
     }
@@ -631,8 +652,7 @@ class UrlAnalyzer {
 
     // كلمات دخول/تحقق + مؤشر قوي تاني (انتحال علامة، IP، @، دومين عشوائي، امتداد
     // مشبوه، رابط مختصر...) = سياق احتيال. الكلمات لوحدها ما بتتحسبش.
-    if (credHits.isNotEmpty &&
-        f.any((x) => _contextCodes.contains(x.code))) {
+    if (credHits.isNotEmpty && f.any((x) => _contextCodes.contains(x.code))) {
       f.add(Finding(
         code: 'keywords_in_context',
         severity: Severity.warn,

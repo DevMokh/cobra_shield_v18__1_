@@ -183,7 +183,8 @@ class NormalizedUrl {
   bool get hasIp => ip != null;
 
   /// قابل للتحليل كرابط ويب (فيه مضيف ومفيش أخطاء بنيوية).
-  bool get valid => errors.isEmpty && host.isNotEmpty && dangerousScheme.isEmpty;
+  bool get valid =>
+      errors.isEmpty && host.isNotEmpty && dangerousScheme.isEmpty;
 }
 
 class _Decoded {
@@ -236,17 +237,24 @@ class UrlNormalizer {
   static const int maxDecodeRounds = 6;
 
   static const Set<String> _webSchemes = <String>{
-    'http', 'https', 'ftp', 'ftps', 'ws', 'wss',
+    'http',
+    'https',
+    'ftp',
+    'ftps',
+    'ws',
+    'wss',
   };
 
   static final RegExp _dangerRe = RegExp(
       r'^(javascript|data|vbscript|file|intent|blob|about):',
       caseSensitive: false);
-  static final RegExp _schemeRe = RegExp(r'^([a-zA-Z][a-zA-Z0-9+.\-]*):([/\\]*)');
+  static final RegExp _schemeRe =
+      RegExp(r'^([a-zA-Z][a-zA-Z0-9+.\-]*):([/\\]*)');
   static final RegExp _noColonRe =
       RegExp(r'^(https?|ftps?)([/\\]{2,})', caseSensitive: false);
   static final RegExp _protoRelRe = RegExp(r'^[/\\]{2,}');
-  static final RegExp _hxxpRe = RegExp(r'^hxxp(s?)(?=[:\[/\\])', caseSensitive: false);
+  static final RegExp _hxxpRe =
+      RegExp(r'^hxxp(s?)(?=[:\[/\\])', caseSensitive: false);
   static final RegExp _defangDot =
       RegExp(r'\[\.\]|\(\.\)|\{\.\}|\[dot\]|\(dot\)', caseSensitive: false);
   static final RegExp _defangColon = RegExp(r'\[:\]|\[://\]');
@@ -293,11 +301,13 @@ class UrlNormalizer {
       r == 0x3000;
 
   /// علامات الاتجاه الطبيعية: LRM / RLM / ALM.
-  static bool isDirectionMark(int r) => r == 0x200E || r == 0x200F || r == 0x61C;
+  static bool isDirectionMark(int r) =>
+      r == 0x200E || r == 0x200F || r == 0x61C;
 
   /// يشيل الحروف الخفية من [s] ويسجّلها في [acc]. علامات الاتجاه الطبيعية بتتشال
   /// بدون ما تتحسب تمويهًا إلا لو [strictMarks] = true (جوه المضيف وبيانات الدخول).
-  static String _stripInvisible(String s, _HiddenAcc acc, {required bool strictMarks}) {
+  static String _stripInvisible(String s, _HiddenAcc acc,
+      {required bool strictMarks}) {
     var any = false;
     final sb = StringBuffer();
     for (final r in s.runes) {
@@ -412,7 +422,8 @@ class UrlNormalizer {
         final bytes = <int>[];
         var j = i;
         while (j < s.length && _isPct(s, j)) {
-          bytes.add(_hexVal(s.codeUnitAt(j + 1)) * 16 + _hexVal(s.codeUnitAt(j + 2)));
+          bytes.add(
+              _hexVal(s.codeUnitAt(j + 1)) * 16 + _hexVal(s.codeUnitAt(j + 2)));
           j += 3;
         }
         _appendBytes(out, bytes);
@@ -428,7 +439,8 @@ class UrlNormalizer {
 
   /// فك ترميز متكرر (%252F -> %2F -> /) لحد ما النص يثبت أو نوصل للحد الأقصى.
   /// بيشيل الحروف الخفية اللي بتظهر بعد كل جولة (%0A و %E2%80%8B).
-  static _Decoded _decodeAll(String s, _HiddenAcc acc, {required bool strictMarks}) {
+  static _Decoded _decodeAll(String s, _HiddenAcc acc,
+      {required bool strictMarks}) {
     var cur = s;
     var rounds = 0;
     while (rounds < maxDecodeRounds) {
@@ -1025,7 +1037,12 @@ class UrlNormalizer {
       var bad = false;
       final srcRunes = hostText.runes.toSet();
       for (final c in h.runes) {
-        if (c == 0x2F || c == 0x5C || c == 0x3F || c == 0x23 || c == 0x40 || c == 0x3A) {
+        if (c == 0x2F ||
+            c == 0x5C ||
+            c == 0x3F ||
+            c == 0x23 ||
+            c == 0x40 ||
+            c == 0x3A) {
           if (!srcRunes.contains(c)) {
             sepLook = true; // الفاصل ظهر بعد طي حرف مزخرف/عريض (مثل ／)
           } else if (hostEncoded) {

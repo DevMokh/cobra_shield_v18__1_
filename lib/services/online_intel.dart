@@ -56,7 +56,8 @@ class OnlineIntel {
       return const IntelResult(
         source: src,
         status: IntelStatus.notConfigured,
-        message: 'القاعدة غير محمّلة، فالرابط ما اتفحصش بها. حدّثها من تبويب أدوات.',
+        message:
+            'القاعدة غير محمّلة، فالرابط ما اتفحصش بها. حدّثها من تبويب أدوات.',
       );
     }
     final m = f.match(url);
@@ -64,7 +65,8 @@ class OnlineIntel {
       return IntelResult(
         source: src,
         status: IntelStatus.clean,
-        message: 'غير مدرج في قائمة التصيّد (${f.count} رابط). القائمة لا تغطي كل الروابط.',
+        message:
+            'غير مدرج في قائمة التصيّد (${f.count} رابط). القائمة لا تغطي كل الروابط.',
       );
     }
     final String why;
@@ -102,8 +104,8 @@ class OnlineIntel {
     return '${(days / 365).floor()} سنة';
   }
 
-  static final RegExp _asciiDomain =
-      RegExp(r'^(?=.{1,253}$)([a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$');
+  static final RegExp _asciiDomain = RegExp(
+      r'^(?=.{1,253}$)([a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$');
 
   static final RegExp _numericOnly = RegExp(r'^[0-9.]+$');
 
@@ -120,8 +122,13 @@ class OnlineIntel {
     try {
       final r = await httpRequest(
         'GET',
-        Uri(scheme: 'https', host: 'rdap.org', pathSegments: <String>['domain', domain]),
-        headers: <String, String>{'accept': 'application/rdap+json, application/json'},
+        Uri(
+            scheme: 'https',
+            host: 'rdap.org',
+            pathSegments: <String>['domain', domain]),
+        headers: <String, String>{
+          'accept': 'application/rdap+json, application/json'
+        },
         timeout: const Duration(seconds: 12),
         maxBytes: 1024 * 1024,
       );
@@ -491,7 +498,8 @@ class OnlineIntel {
             Finding(
               severity: Severity.warn,
               title: 'VirusTotal: $mal محرك يرصده',
-              detail: 'عدد قليل من المحركات صنّفته خبيثًا. قد يكون إنذارًا كاذبًا، لكن تعامل بحذر.',
+              detail:
+                  'عدد قليل من المحركات صنّفته خبيثًا. قد يكون إنذارًا كاذبًا، لكن تعامل بحذر.',
               points: 35,
             ),
           ],

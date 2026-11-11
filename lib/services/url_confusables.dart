@@ -140,9 +140,12 @@ class Confusables {
     if (r >= 0x1D7CE && r <= 0x1D7FF) {
       return String.fromCharCode(0x30 + ((r - 0x1D7CE) % 10));
     }
-    if (r >= 0x24B6 && r <= 0x24CF) return String.fromCharCode(0x61 + (r - 0x24B6));
-    if (r >= 0x24D0 && r <= 0x24E9) return String.fromCharCode(0x61 + (r - 0x24D0));
-    if (r >= 0x249C && r <= 0x24B5) return String.fromCharCode(0x61 + (r - 0x249C));
+    if (r >= 0x24B6 && r <= 0x24CF)
+      return String.fromCharCode(0x61 + (r - 0x24B6));
+    if (r >= 0x24D0 && r <= 0x24E9)
+      return String.fromCharCode(0x61 + (r - 0x24D0));
+    if (r >= 0x249C && r <= 0x24B5)
+      return String.fromCharCode(0x61 + (r - 0x249C));
     switch (r) {
       case 0x210E:
         return 'h';

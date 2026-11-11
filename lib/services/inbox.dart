@@ -18,7 +18,8 @@ class Inbox {
 
   /// طلبات فحص موجّهة للشاشات
   static final ValueNotifier<Incoming?> toUrl = ValueNotifier<Incoming?>(null);
-  static final ValueNotifier<Incoming?> toMessage = ValueNotifier<Incoming?>(null);
+  static final ValueNotifier<Incoming?> toMessage =
+      ValueNotifier<Incoming?>(null);
 
   static bool _started = false;
 

@@ -32,9 +32,11 @@ class UrlValidator {
   static const int maxHostLength = 253;
 
   // "scheme:" في أول النص (مثل mailto: و tel: و ftp:// و C:\).
-  static final RegExp _schemeLike = RegExp(r'^([a-zA-Z][a-zA-Z0-9+.\-]*):(.*)$', dotAll: true);
+  static final RegExp _schemeLike =
+      RegExp(r'^([a-zA-Z][a-zA-Z0-9+.\-]*):(.*)$', dotAll: true);
   // example.com:8080 أو localhost:3000/path => ده host:port مش بروتوكول.
-  static final RegExp _portTail = RegExp(r'^\d{1,5}(?:[/?#].*)?$', dotAll: true);
+  static final RegExp _portTail =
+      RegExp(r'^\d{1,5}(?:[/?#].*)?$', dotAll: true);
 
   static UrlValidation _bad(String code, String detail) =>
       UrlValidation._(code, detail);
@@ -62,7 +64,9 @@ class UrlValidator {
         );
       }
     }
-    if (!n.schemeAssumed && n.scheme.isNotEmpty && !supportedSchemes.contains(n.scheme)) {
+    if (!n.schemeAssumed &&
+        n.scheme.isNotEmpty &&
+        !supportedSchemes.contains(n.scheme)) {
       return _bad(
         'unsupported_scheme',
         'البروتوكول (${n.scheme}) غير مدعوم في الفحص. بنفحص روابط http و https فقط.',
@@ -81,7 +85,8 @@ class UrlValidator {
               'الرابط ناقص: مفيش اسم موقع بعد ${n.scheme}://. اكتب الرابط كاملًا مثل https://example.com');
     }
     if (n.errors.contains('bad_port')) {
-      return _bad('invalid_port', 'رقم المنفذ في الرابط غير صالح (لازم بين 0 و65535).');
+      return _bad(
+          'invalid_port', 'رقم المنفذ في الرابط غير صالح (لازم بين 0 و65535).');
     }
     if (n.errors.contains('bad_ipv6')) {
       return _bad('invalid_host', 'عنوان IPv6 في الرابط غير صالح.');
@@ -91,7 +96,8 @@ class UrlValidator {
           'اسم الموقع رقمي بشكل غير صالح (مش عنوان IP صحيح). المتصفح كان هيرفض الرابط ده.');
     }
     if (!adversarial && n.errors.isNotEmpty) {
-      return _bad('invalid_host', 'اسم الموقع فيه رموز أو تركيب غير مسموح في الدومينات.');
+      return _bad('invalid_host',
+          'اسم الموقع فيه رموز أو تركيب غير مسموح في الدومينات.');
     }
     if (adversarial) return const UrlValidation.valid();
 
@@ -100,17 +106,20 @@ class UrlValidator {
 
     final host = n.host;
     if (host.isEmpty) {
-      return _bad('not_a_url', 'النص ده مش شكل رابط. اكتب الرابط كاملًا مثل https://example.com');
+      return _bad('not_a_url',
+          'النص ده مش شكل رابط. اكتب الرابط كاملًا مثل https://example.com');
     }
 
     // 5) صيغة اسم المضيف: أطوال وأجزاء فاضية
     final labels = host.split('.');
     if (host.length > maxHostLength) {
-      return _bad('invalid_host', 'اسم الموقع أطول من الحد المسموح ($maxHostLength حرف).');
+      return _bad('invalid_host',
+          'اسم الموقع أطول من الحد المسموح ($maxHostLength حرف).');
     }
     for (final l in labels) {
       if (l.isEmpty) {
-        return _bad('invalid_host', 'اسم الموقع فيه جزء فاضي (نقطتين ورا بعض أو نقطة في أوله).');
+        return _bad('invalid_host',
+            'اسم الموقع فيه جزء فاضي (نقطتين ورا بعض أو نقطة في أوله).');
       }
       if (l.length > maxLabelLength) {
         return _bad('invalid_host',
@@ -133,7 +142,8 @@ class UrlValidator {
       return n.schemeAssumed
           ? _bad('not_a_url',
               'النص ده مش شكل رابط (الامتداد "$tld" غير صالح). اكتب الرابط كاملًا مثل https://example.com')
-          : _bad('invalid_host', 'امتداد الدومين "$tld" غير صالح (لازم حروف فقط مثل com أو eg).');
+          : _bad('invalid_host',
+              'امتداد الدومين "$tld" غير صالح (لازم حروف فقط مثل com أو eg).');
     }
 
     // 8) مدخل بدون بروتوكول: لازم الامتداد يكون معروف عشان نعتبره رابط (مش "file.txt")

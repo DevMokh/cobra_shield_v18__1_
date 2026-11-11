@@ -107,7 +107,8 @@ class HomeDashboard extends StatelessWidget {
                     borderColor: alpha(C.amber, 0.4),
                     child: Row(
                       children: [
-                        const Icon(Icons.lightbulb_rounded, color: C.amber, size: 22),
+                        const Icon(Icons.lightbulb_rounded,
+                            color: C.amber, size: 22),
                         const SizedBox(width: 10),
                         Expanded(
                           child: Text(
@@ -128,7 +129,8 @@ class HomeDashboard extends StatelessWidget {
                     children: [
                       _quick(Icons.link_rounded, 'رابط', () => onTab(1)),
                       const SizedBox(width: 10),
-                      _quick(Icons.mark_email_unread_rounded, 'رسالة', () => onTab(2)),
+                      _quick(Icons.mark_email_unread_rounded, 'رسالة',
+                          () => onTab(2)),
                       const SizedBox(width: 10),
                       _quick(Icons.qr_code_scanner_rounded, 'رمز QR', onQr),
                       const SizedBox(width: 10),
@@ -147,7 +149,8 @@ class HomeDashboard extends StatelessWidget {
                   const SizedBox(height: 14),
                   if (items.isEmpty)
                     const Panel(
-                      padding: EdgeInsets.symmetric(vertical: 30, horizontal: 16),
+                      padding:
+                          EdgeInsets.symmetric(vertical: 30, horizontal: 16),
                       child: Column(
                         children: [
                           Icon(Icons.shield_outlined, color: C.muted, size: 38),
@@ -185,7 +188,8 @@ class HomeDashboard extends StatelessWidget {
                               feed.updated == null
                                   ? 'قاعدة مصادر التهديدات لسه مش محمّلة. حمّلها من المزيد ← الإعدادات.'
                                   : 'قاعدة مصادر التهديدات قديمة. حدّثها من المزيد ← الإعدادات للحصول على أحدث كشف.',
-                              style: const TextStyle(color: C.muted, fontSize: 12.5, height: 1.5),
+                              style: const TextStyle(
+                                  color: C.muted, fontSize: 12.5, height: 1.5),
                             ),
                           ),
                           TextButton(
@@ -227,14 +231,16 @@ class HomeDashboard extends StatelessWidget {
             ),
             child: Text(
               '${it.score}',
-              style: TextStyle(color: c, fontWeight: FontWeight.w900, fontSize: 12.5),
+              style: TextStyle(
+                  color: c, fontWeight: FontWeight.w900, fontSize: 12.5),
             ),
           ),
           const SizedBox(width: 10),
           Expanded(
             child: Directionality(
-              textDirection:
-                  it.kind == ScanKind.url ? TextDirection.ltr : TextDirection.rtl,
+              textDirection: it.kind == ScanKind.url
+                  ? TextDirection.ltr
+                  : TextDirection.rtl,
               child: Text(
                 it.title,
                 maxLines: 1,

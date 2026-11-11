@@ -118,7 +118,8 @@ class _HomeShellState extends State<HomeShell> with WidgetsBindingObserver {
     if (inc == null) return;
     final text = inc.text;
     final links = MessageAnalyzer.extractLinks(text);
-    final singleLink = links.length == 1 && (text.length - links.first.length) < 12;
+    final singleLink =
+        links.length == 1 && (text.length - links.first.length) < 12;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       if (singleLink) {

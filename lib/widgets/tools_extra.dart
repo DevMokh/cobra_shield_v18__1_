@@ -31,7 +31,8 @@ Widget _title(IconData icon, String title, String sub) {
               const SizedBox(height: 2),
               Text(
                 sub,
-                style: const TextStyle(color: C.muted, fontSize: 12.5, height: 1.4),
+                style: const TextStyle(
+                    color: C.muted, fontSize: 12.5, height: 1.4),
               ),
             ],
           ),
@@ -95,7 +96,8 @@ class _SenderToolState extends State<SenderTool> {
                 enableSuggestions: false,
                 style: const TextStyle(
                     fontFamily: 'monospace', color: C.text, fontSize: 14),
-                decoration: fieldDecoration(hint: '01012345678 أو +14155550123 أو اسم'),
+                decoration:
+                    fieldDecoration(hint: '01012345678 أو +14155550123 أو اسم'),
               ),
               const SizedBox(height: 12),
               const Text(
@@ -249,7 +251,8 @@ class _BatchToolState extends State<BatchTool> {
     for (final s in inputs.take(_max)) {
       rows.add(_BatchRow(s, UrlAnalyzer.analyze(s)));
     }
-    rows.sort((a, b) => b.result.effectiveScore.compareTo(a.result.effectiveScore));
+    rows.sort(
+        (a, b) => b.result.effectiveScore.compareTo(a.result.effectiveScore));
     setState(() {
       _rows = rows;
       _skipped = skipped;
@@ -261,7 +264,8 @@ class _BatchToolState extends State<BatchTool> {
     final b = StringBuffer('تقرير فحص مجمّع - Cobra Shield\n\n');
     for (final r in _rows) {
       if (r.result.hasScore) {
-        b.writeln('${r.result.effectiveScore}/100 - ${r.result.headline} - ${r.input}');
+        b.writeln(
+            '${r.result.effectiveScore}/100 - ${r.result.headline} - ${r.input}');
       } else {
         b.writeln('غير مفحوص (${r.result.headline}) - ${r.input}');
       }
@@ -368,7 +372,8 @@ class _BatchToolState extends State<BatchTool> {
                 maxLines: 8,
                 style: const TextStyle(
                     fontFamily: 'monospace', color: C.text, fontSize: 13),
-                decoration: fieldDecoration(hint: 'https://a.com\nhttps://b.xyz/login'),
+                decoration:
+                    fieldDecoration(hint: 'https://a.com\nhttps://b.xyz/login'),
               ),
               const SizedBox(height: 10),
               Row(

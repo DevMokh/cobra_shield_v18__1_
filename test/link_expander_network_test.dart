@@ -24,7 +24,8 @@ void main() {
   });
 
   group('DNS rebinding: الحارس وقت الاتصال', () {
-    test('دومين شكله عادي لكنه بيحل لعنوان داخلي (10.x): متمنوع وبدون اتصال', () async {
+    test('دومين شكله عادي لكنه بيحل لعنوان داخلي (10.x): متمنوع وبدون اتصال',
+        () async {
       var lookups = 0;
       LinkExpander.resolverForTesting = (host) async {
         lookups++;
@@ -40,7 +41,8 @@ void main() {
     test('عنوان metadata (169.254.169.254) بعد الـ DNS: متمنوع', () async {
       LinkExpander.resolverForTesting =
           (host) async => <InternetAddress>[InternetAddress('169.254.169.254')];
-      final r = await LinkExpander.expand('http://metadata.example.net/latest/');
+      final r =
+          await LinkExpander.expand('http://metadata.example.net/latest/');
       expect(r.failure, ExpandFailure.blocked);
     });
 
@@ -87,13 +89,16 @@ void main() {
       await server.close(force: true);
     });
 
-    test('الاتصال بيروح للـ IP اللي رجّعه الـ resolver، واسم الموقع بيفضل في Host', () async {
+    test(
+        'الاتصال بيروح للـ IP اللي رجّعه الـ resolver، واسم الموقع بيفضل في Host',
+        () async {
       var lookups = 0;
       LinkExpander.resolverForTesting = (host) async {
         lookups++;
         return <InternetAddress>[InternetAddress.loopbackIPv4];
       };
-      final r = await LinkExpander.expand('http://pinned.example.net:${server.port}/x');
+      final r = await LinkExpander.expand(
+          'http://pinned.example.net:${server.port}/x');
       expect(r.error, isNull);
       expect(r.statusCode, 200);
       expect(seenHosts, isNotEmpty);
@@ -105,8 +110,8 @@ void main() {
 
   group('فشل الوصول للموقع = حالة مستقلة (مش تصيّد)', () {
     test('فشل DNS', () async {
-      LinkExpander.resolverForTesting = (host) async =>
-          throw const SocketException('Failed host lookup');
+      LinkExpander.resolverForTesting =
+          (host) async => throw const SocketException('Failed host lookup');
       final r = await LinkExpander.expand('http://no-such-domain.example.net/');
       expect(r.failure, ExpandFailure.dns);
       expect(r.hostUnreachable, isTrue);
@@ -122,7 +127,8 @@ void main() {
       await tmp.close();
       LinkExpander.resolverForTesting =
           (host) async => <InternetAddress>[InternetAddress.loopbackIPv4];
-      final r = await LinkExpander.expand('http://refused.example.net:$closedPort/');
+      final r =
+          await LinkExpander.expand('http://refused.example.net:$closedPort/');
       expect(r.failure, ExpandFailure.connection);
       expect(r.hostUnreachable, isTrue);
     });
@@ -134,7 +140,8 @@ void main() {
       silent.listen(sockets.add);
       LinkExpander.resolverForTesting =
           (host) async => <InternetAddress>[InternetAddress.loopbackIPv4];
-      final r = await LinkExpander.expand('http://slow.example.net:${silent.port}/');
+      final r =
+          await LinkExpander.expand('http://slow.example.net:${silent.port}/');
       expect(r.failure, ExpandFailure.timeout);
       expect(r.hostUnreachable, isTrue);
       for (final s in sockets) {
@@ -153,7 +160,8 @@ void main() {
       final serverCtx = SecurityContext()
         ..useCertificateChain('test/fixtures/test_cert.pem')
         ..usePrivateKey('test/fixtures/test_key.pem');
-      tls = await HttpServer.bindSecure(InternetAddress.loopbackIPv4, 0, serverCtx);
+      tls = await HttpServer.bindSecure(
+          InternetAddress.loopbackIPv4, 0, serverCtx);
       tls.listen((req) async {
         req.response.statusCode = 200;
         await req.response.close();
@@ -166,20 +174,24 @@ void main() {
       await tls.close(force: true);
     });
 
-    test('شهادة موثوقة لاسم localhost: الاتصال المثبّت على IP ينجح (الاسم هو اللي بيتحقق)', () async {
+    test(
+        'شهادة موثوقة لاسم localhost: الاتصال المثبّت على IP ينجح (الاسم هو اللي بيتحقق)',
+        () async {
       LinkExpander.securityContextForTesting = trustTestCert;
       final r = await LinkExpander.expand('https://localhost:${tls.port}/');
       expect(r.error, isNull, reason: r.error);
       expect(r.statusCode, 200);
     });
 
-    test('نفس السيرفر بالـ IP (127.0.0.1): الشهادة لا تطابق الاسم فيفشل', () async {
+    test('نفس السيرفر بالـ IP (127.0.0.1): الشهادة لا تطابق الاسم فيفشل',
+        () async {
       LinkExpander.securityContextForTesting = trustTestCert;
       final r = await LinkExpander.expand('https://127.0.0.1:${tls.port}/');
       expect(r.failure, ExpandFailure.tls);
     });
 
-    test('شهادة غير موثوقة (جذور النظام): الاتصال يفشل، التحقق مش متعطّل', () async {
+    test('شهادة غير موثوقة (جذور النظام): الاتصال يفشل، التحقق مش متعطّل',
+        () async {
       final r = await LinkExpander.expand('https://localhost:${tls.port}/');
       expect(r.failure, ExpandFailure.tls);
     });

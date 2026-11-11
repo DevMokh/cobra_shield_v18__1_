@@ -72,7 +72,8 @@ class HistoryScreen extends StatelessWidget {
                 children: [
                   if (items.isEmpty)
                     const Panel(
-                      padding: EdgeInsets.symmetric(vertical: 36, horizontal: 16),
+                      padding:
+                          EdgeInsets.symmetric(vertical: 36, horizontal: 16),
                       child: Column(
                         children: [
                           Icon(Icons.inbox_rounded, color: C.muted, size: 40),
@@ -96,11 +97,13 @@ class HistoryScreen extends StatelessWidget {
                             onPressed: () => _export(items),
                             icon: const Icon(Icons.ios_share_rounded, size: 18),
                             label: const Text('تصدير'),
-                            style: TextButton.styleFrom(foregroundColor: C.emerald),
+                            style: TextButton.styleFrom(
+                                foregroundColor: C.emerald),
                           ),
                           TextButton.icon(
                             onPressed: () => _confirmClear(context),
-                            icon: const Icon(Icons.delete_sweep_rounded, size: 18),
+                            icon: const Icon(Icons.delete_sweep_rounded,
+                                size: 18),
                             label: const Text('مسح الكل'),
                             style: TextButton.styleFrom(foregroundColor: C.red),
                           ),

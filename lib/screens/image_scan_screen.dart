@@ -65,7 +65,8 @@ class _ImageScanScreenState extends State<ImageScanScreen> {
         _ctrl.text = outcome?.text ?? '';
       });
       if (outcome == null) {
-        toast(context, 'فشلت قراءة الصورة. ده مش معناه إنها آمنة. اكتب النص يدويًا.');
+        toast(context,
+            'فشلت قراءة الصورة. ده مش معناه إنها آمنة. اكتب النص يدويًا.');
       } else if (outcome.quality == OcrQuality.empty) {
         toast(context, 'ما قدرناش نقرأ نص واضح من الصورة. اكتب النص يدويًا.');
       } else if (outcome.quality == OcrQuality.low) {
@@ -85,7 +86,8 @@ class _ImageScanScreenState extends State<ImageScanScreen> {
       toast(context, 'مفيش نص للفحص. اكتب أو استخرج من صورة أولًا');
       return;
     }
-    final r = MessageAnalyzer.analyze(text, partialReason: _partialReason(text));
+    final r =
+        MessageAnalyzer.analyze(text, partialReason: _partialReason(text));
     setState(() => _result = r);
     if (!r.hasScore) return;
     HistoryStore.instance.add(HistoryItem(
@@ -176,12 +178,14 @@ class _ImageScanScreenState extends State<ImageScanScreen> {
                 children: [
                   Row(
                     children: [
-                      const Icon(Icons.image_search_rounded, color: C.emerald, size: 22),
+                      const Icon(Icons.image_search_rounded,
+                          color: C.emerald, size: 22),
                       const SizedBox(width: 10),
                       const Expanded(
                         child: Text(
                           'استخرج نص من سكرين شوت للرسالة، راجعه، ثم افحصه.',
-                          style: TextStyle(color: C.text, fontSize: 13, height: 1.5),
+                          style: TextStyle(
+                              color: C.text, fontSize: 13, height: 1.5),
                         ),
                       ),
                     ],
@@ -192,7 +196,8 @@ class _ImageScanScreenState extends State<ImageScanScreen> {
                   if (_image != null) ...[
                     ClipRRect(
                       borderRadius: BorderRadius.circular(14),
-                      child: Image.file(_image!, height: 160, fit: BoxFit.cover),
+                      child:
+                          Image.file(_image!, height: 160, fit: BoxFit.cover),
                     ),
                     const SizedBox(height: 10),
                   ],
@@ -200,18 +205,22 @@ class _ImageScanScreenState extends State<ImageScanScreen> {
                     children: [
                       Expanded(
                         child: OutlinedButton.icon(
-                          onPressed: _busy ? null : () => _pick(ImageSource.gallery),
+                          onPressed:
+                              _busy ? null : () => _pick(ImageSource.gallery),
                           style: outlineButtonStyle(),
-                          icon: const Icon(Icons.photo_library_outlined, size: 18),
+                          icon: const Icon(Icons.photo_library_outlined,
+                              size: 18),
                           label: const Text('من المعرض'),
                         ),
                       ),
                       const SizedBox(width: 10),
                       Expanded(
                         child: OutlinedButton.icon(
-                          onPressed: _busy ? null : () => _pick(ImageSource.camera),
+                          onPressed:
+                              _busy ? null : () => _pick(ImageSource.camera),
                           style: outlineButtonStyle(),
-                          icon: const Icon(Icons.photo_camera_outlined, size: 18),
+                          icon:
+                              const Icon(Icons.photo_camera_outlined, size: 18),
                           label: const Text('صوّر الآن'),
                         ),
                       ),
@@ -224,10 +233,12 @@ class _ImageScanScreenState extends State<ImageScanScreen> {
                         SizedBox(
                           width: 16,
                           height: 16,
-                          child: CircularProgressIndicator(strokeWidth: 2, color: C.emerald),
+                          child: CircularProgressIndicator(
+                              strokeWidth: 2, color: C.emerald),
                         ),
                         SizedBox(width: 10),
-                        Text('جارٍ قراءة النص...', style: TextStyle(color: C.muted, fontSize: 12.5)),
+                        Text('جارٍ قراءة النص...',
+                            style: TextStyle(color: C.muted, fontSize: 12.5)),
                       ],
                     ),
                   ],
@@ -236,7 +247,8 @@ class _ImageScanScreenState extends State<ImageScanScreen> {
                     controller: _ctrl,
                     minLines: 5,
                     maxLines: 9,
-                    style: const TextStyle(color: C.text, fontSize: 14, height: 1.5),
+                    style: const TextStyle(
+                        color: C.text, fontSize: 14, height: 1.5),
                     decoration: fieldDecoration(
                       hint: 'النص المستخرج هيظهر هنا. راجعه قبل الفحص...',
                     ),
@@ -274,7 +286,8 @@ class _ImageScanScreenState extends State<ImageScanScreen> {
                         color: C.surface,
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(
-                          color: alpha(l.hasScore ? levelColor(l.level) : C.amber, 0.4),
+                          color: alpha(
+                              l.hasScore ? levelColor(l.level) : C.amber, 0.4),
                         ),
                       ),
                       child: Row(

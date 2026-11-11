@@ -62,7 +62,8 @@ void main() {
       await req.response.close();
     }
 
-    test('تحويلة عادية ثم 200: الاتصال بيشتغل وبينتهي للوجهة النهائية', () async {
+    test('تحويلة عادية ثم 200: الاتصال بيشتغل وبينتهي للوجهة النهائية',
+        () async {
       handler = (req) async {
         if (req.uri.path == '/start') return redirect(req, '/final');
         req.response.statusCode = 200;
@@ -76,8 +77,11 @@ void main() {
       expect(r.statusCode, 200);
     });
 
-    test('تحويلة لعنوان metadata: الحارس يوقفها (blockedOnRedirect) من غير اتصال', () async {
-      handler = (req) => redirect(req, 'http://169.254.169.254/latest/meta-data/');
+    test(
+        'تحويلة لعنوان metadata: الحارس يوقفها (blockedOnRedirect) من غير اتصال',
+        () async {
+      handler =
+          (req) => redirect(req, 'http://169.254.169.254/latest/meta-data/');
       final r = await LinkExpander.expand('http://127.0.0.1:$port/start');
       expect(r.blocked, isTrue);
       expect(r.blockedHop, 1);
@@ -87,7 +91,9 @@ void main() {
       expect(hits, <String>['HEAD /start']);
     });
 
-    test('تحويلة لشبكة داخلية 192.168 / 10 أو user@ أو بروتوكول غريب كلها بتتوقف', () async {
+    test(
+        'تحويلة لشبكة داخلية 192.168 / 10 أو user@ أو بروتوكول غريب كلها بتتوقف',
+        () async {
       for (final target in <String>[
         'http://192.168.1.1/admin',
         'http://10.0.0.5:8080/',

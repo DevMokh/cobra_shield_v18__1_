@@ -101,7 +101,8 @@ class LinkExpander {
   /// للاختبارات فقط: بديل لـ [InternetAddress.lookup] (لمحاكاة دومين بيحل لعنوان داخلي
   /// أو اتنين عناوين...). الافتراضي null (DNS حقيقي).
   @visibleForTesting
-  static Future<List<InternetAddress>> Function(String host)? resolverForTesting;
+  static Future<List<InternetAddress>> Function(String host)?
+      resolverForTesting;
 
   /// للاختبارات فقط: SecurityContext بديل (لاختبار التحقق من الشهادة واسم الموقع مع
   /// شهادة اختبار). الافتراضي null = جذور النظام.
@@ -167,7 +168,8 @@ class LinkExpander {
       var current = Uri.parse(url);
       for (var hop = 0; hop < maxHops; hop++) {
         if (clock.elapsed > _totalBudget) {
-          return fail('انتهت المهلة الكلية لتتبع التحويلات.', ExpandFailure.timeout);
+          return fail(
+              'انتهت المهلة الكلية لتتبع التحويلات.', ExpandFailure.timeout);
         }
         final reason = NetGuard.blockReason(current);
         if (reason != null) {
@@ -189,14 +191,18 @@ class LinkExpander {
         }
         status = p.status;
         final loc = p.location;
-        if (p.status >= 300 && p.status < 400 && loc != null && loc.isNotEmpty) {
+        if (p.status >= 300 &&
+            p.status < 400 &&
+            loc != null &&
+            loc.isNotEmpty) {
           if (loc.length > maxLocationLength) {
             return fail('عنوان التحويلة طويل بشكل غير طبيعي وهذا مريب.',
                 ExpandFailure.badRedirect);
           }
           final next = current.resolve(loc);
           if (chain.contains(next.toString())) {
-            return fail('التحويلات بتدور في حلقة مفرغة وهذا مريب.', ExpandFailure.loop);
+            return fail(
+                'التحويلات بتدور في حلقة مفرغة وهذا مريب.', ExpandFailure.loop);
           }
           current = next;
           chain.add(current.toString());
@@ -238,7 +244,8 @@ class LinkExpander {
         ExpandFailure.connection,
       );
     } on FormatException {
-      return fail('تحويلة بعنوان غير صالح وهذا مريب.', ExpandFailure.badRedirect);
+      return fail(
+          'تحويلة بعنوان غير صالح وهذا مريب.', ExpandFailure.badRedirect);
     } catch (_) {
       // لو الحارس هو سبب الخطأ (حتى لو اتغلّف الاستثناء) نقول كده بدل رسالة عامة
       final why = blockedReason;

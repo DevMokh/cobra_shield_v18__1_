@@ -97,7 +97,8 @@ void main() {
     }
   });
 
-  group('المتجهات الرسمية بصيغة Punycode (عبر UrlAnalyzer.registrableDomain)', () {
+  group('المتجهات الرسمية بصيغة Punycode (عبر UrlAnalyzer.registrableDomain)',
+      () {
     const vectors = <List<String?>>[
       <String?>['xn--85x722f.com.cn', 'xn--85x722f.com.cn'],
       <String?>['xn--85x722f.xn--55qx5d.cn', 'xn--85x722f.xn--55qx5d.cn'],
@@ -125,7 +126,8 @@ void main() {
       expect(m.privateSection, isTrue);
       expect(m.publicSuffix, 'github.io');
       // لو تجاهلنا قسم PRIVATE بترجع github.io نفسه.
-      final icann = PublicSuffixList.instance.lookup('evil.github.io', includePrivate: false)!;
+      final icann = PublicSuffixList.instance
+          .lookup('evil.github.io', includePrivate: false)!;
       expect(icann.registrableDomain, 'github.io');
     });
 
@@ -138,7 +140,8 @@ void main() {
 
     test('التمويه بدومين رسمي كدومين فرعي: الدومين المسجّل هو الأخير', () {
       expect(registrable('paypal.com.evil.xyz'), 'evil.xyz');
-      expect(registrable('login.paypal.com.account-verify.top'), 'account-verify.top');
+      expect(registrable('login.paypal.com.account-verify.top'),
+          'account-verify.top');
       expect(UrlAnalyzer.registrableDomain('paypal.com.evil.xyz'), 'evil.xyz');
     });
 
@@ -158,7 +161,9 @@ void main() {
       expect(PublicSuffixList.instance.lookup('a..com'), isNull);
     });
 
-    test('امتداد غير معروف: القاعدة الافتراضية (listed=false) وisKnownTld=false', () {
+    test(
+        'امتداد غير معروف: القاعدة الافتراضية (listed=false) وisKnownTld=false',
+        () {
       final m = PublicSuffixList.instance.lookup('foo.example')!;
       expect(m.listed, isFalse);
       expect(PublicSuffixList.instance.isKnownTld('example'), isFalse);

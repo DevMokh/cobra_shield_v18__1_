@@ -121,7 +121,8 @@ class LearnScreen extends StatelessWidget {
                               children: [
                                 const Padding(
                                   padding: EdgeInsets.only(top: 6),
-                                  child: Icon(Icons.circle, size: 6, color: C.emerald),
+                                  child: Icon(Icons.circle,
+                                      size: 6, color: C.emerald),
                                 ),
                                 const SizedBox(width: 10),
                                 Expanded(

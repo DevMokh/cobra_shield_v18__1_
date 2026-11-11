@@ -75,7 +75,9 @@ void main() {
         kind: ScanKind.message,
         score: 0,
         findings: const <Finding>[],
-        links: <ScanResult>[res(5, findings: const <Finding>[_confirmed])],
+        links: <ScanResult>[
+          res(5, findings: const <Finding>[_confirmed])
+        ],
       );
       expect(msg.verdict, Verdict.confirmedThreat);
       final msg2 = ScanResult(
@@ -88,7 +90,8 @@ void main() {
     });
 
     test('التقرير بيعكس الحكم', () {
-      expect(res(5, findings: const <Finding>[_confirmed]).toReport(), contains('تهديد مؤكد'));
+      expect(res(5, findings: const <Finding>[_confirmed]).toReport(),
+          contains('تهديد مؤكد'));
       final partial = res(0, partial: true).toReport();
       expect(partial, contains('فحص جزئي'));
       expect(partial, contains('تنبيه'));
@@ -103,8 +106,12 @@ void main() {
         expand: ExpandResult(chain: <String>['https://a.example.com/']),
         finalLocal: null,
         intel: <IntelResult>[
-          IntelResult(source: 'VirusTotal', status: IntelStatus.error, message: 'x'),
-          IntelResult(source: 'OpenPhish (محلي)', status: IntelStatus.clean, message: 'x'),
+          IntelResult(
+              source: 'VirusTotal', status: IntelStatus.error, message: 'x'),
+          IntelResult(
+              source: 'OpenPhish (محلي)',
+              status: IntelStatus.clean,
+              message: 'x'),
         ],
         combinedScore: 0,
       );
@@ -113,7 +120,8 @@ void main() {
       final r = report.toResult(local);
       expect(r.partial, isTrue);
       expect(r.verdict, Verdict.partialScan);
-      expect(r.findings.any((f) => f.title == 'الفحص المتقدم غير مكتمل'), isTrue);
+      expect(
+          r.findings.any((f) => f.title == 'الفحص المتقدم غير مكتمل'), isTrue);
     });
 
     test('مصدر "notConfigured" (بدون مفتاح) مش فشل ومش بيتحسب نظيف', () {
@@ -121,7 +129,10 @@ void main() {
         expand: ExpandResult(chain: <String>['https://a.example.com/']),
         finalLocal: null,
         intel: <IntelResult>[
-          IntelResult(source: 'VirusTotal', status: IntelStatus.notConfigured, message: 'x'),
+          IntelResult(
+              source: 'VirusTotal',
+              status: IntelStatus.notConfigured,
+              message: 'x'),
         ],
         combinedScore: 0,
       );
@@ -131,7 +142,8 @@ void main() {
 
     test('فشل تتبع التحويلات = جزئي', () {
       const report = AdvancedReport(
-        expand: ExpandResult(chain: <String>['https://a.example.com/'], error: 'تعذر'),
+        expand: ExpandResult(
+            chain: <String>['https://a.example.com/'], error: 'تعذر'),
         finalLocal: null,
         intel: <IntelResult>[],
         combinedScore: 0,

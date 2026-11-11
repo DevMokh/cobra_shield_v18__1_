@@ -115,8 +115,8 @@ class MoreScreen extends StatelessWidget {
               _MoreItem(
                 icon: Icons.playlist_add_check_rounded,
                 title: _t('فحص مجمّع', 'Batch scan'),
-                subtitle: _t('افحص عدة روابط مرة واحدة',
-                    'Scan several links at once'),
+                subtitle: _t(
+                    'افحص عدة روابط مرة واحدة', 'Scan several links at once'),
                 onTap: () => _openTool(
                   context,
                   _t('فحص مجمّع', 'Batch scan'),
@@ -143,7 +143,8 @@ class MoreScreen extends StatelessWidget {
                 onTap: () => openLearn(context),
               ),
               const SizedBox(height: 10),
-              SectionTitle(_t('أدوات كلمات السر والروابط', 'Password and link tools')),
+              SectionTitle(
+                  _t('أدوات كلمات السر والروابط', 'Password and link tools')),
               _MoreItem(
                 icon: Icons.password_rounded,
                 title: _t('قوة كلمة السر', 'Password strength'),
@@ -152,7 +153,8 @@ class MoreScreen extends StatelessWidget {
                 onTap: () => _openTool(
                   context,
                   _t('قوة كلمة السر', 'Password strength'),
-                  _t('التحليل بيتم على جهازك فقط', 'Analyzed on your device only'),
+                  _t('التحليل بيتم على جهازك فقط',
+                      'Analyzed on your device only'),
                   Icons.password_rounded,
                   const StrengthTool(),
                 ),
@@ -160,8 +162,8 @@ class MoreScreen extends StatelessWidget {
               _MoreItem(
                 icon: Icons.casino_rounded,
                 title: _t('مولّد كلمات السر', 'Password generator'),
-                subtitle: _t('كلمات سر عشوائية قوية',
-                    'Strong random passwords'),
+                subtitle:
+                    _t('كلمات سر عشوائية قوية', 'Strong random passwords'),
                 onTap: () => _openTool(
                   context,
                   _t('مولّد كلمات السر', 'Password generator'),
@@ -200,7 +202,8 @@ class MoreScreen extends StatelessWidget {
               SectionTitle(_t('الإعدادات', 'Settings')),
               _MoreItem(
                 icon: Icons.settings_rounded,
-                title: _t('الإعدادات ومصادر الفحص', 'Settings and scan sources'),
+                title:
+                    _t('الإعدادات ومصادر الفحص', 'Settings and scan sources'),
                 subtitle: _t('اللغة، مراقبة الحافظة، مفاتيح الفحص المتقدم',
                     'Language, clipboard watch, advanced scan keys'),
                 onTap: () => openSettings(context),

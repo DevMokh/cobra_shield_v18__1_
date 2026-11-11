@@ -34,7 +34,8 @@ class TrainScreen extends StatelessWidget {
                   color: alpha(C.emerald, 0.15),
                   borderRadius: BorderRadius.circular(14),
                 ),
-                child: const Icon(Icons.military_tech_rounded, color: C.emerald),
+                child:
+                    const Icon(Icons.military_tech_rounded, color: C.emerald),
               ),
               const SizedBox(width: 12),
               Expanded(
@@ -106,7 +107,8 @@ class TrainScreen extends StatelessWidget {
           decoration: BoxDecoration(
             color: C.surface,
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: unlocked ? alpha(C.emerald, 0.35) : C.line),
+            border:
+                Border.all(color: unlocked ? alpha(C.emerald, 0.35) : C.line),
           ),
           child: Row(
             children: [
@@ -117,7 +119,8 @@ class TrainScreen extends StatelessWidget {
                   color: alpha(c, 0.14),
                   borderRadius: BorderRadius.circular(16),
                 ),
-                child: Icon(unlocked ? level.icon : Icons.lock_rounded, color: c),
+                child:
+                    Icon(unlocked ? level.icon : Icons.lock_rounded, color: c),
               ),
               const SizedBox(width: 14),
               Expanded(
@@ -159,7 +162,9 @@ class TrainScreen extends StatelessWidget {
                 ),
               ),
               Icon(
-                unlocked ? Icons.chevron_left_rounded : Icons.lock_outline_rounded,
+                unlocked
+                    ? Icons.chevron_left_rounded
+                    : Icons.lock_outline_rounded,
                 color: C.muted,
               ),
             ],
@@ -196,7 +201,8 @@ class TrainScreen extends StatelessWidget {
                   const SizedBox(height: 4),
                   OutlinedButton.icon(
                     onPressed: () => Navigator.of(context).push(
-                      MaterialPageRoute<void>(builder: (_) => const LearnPage()),
+                      MaterialPageRoute<void>(
+                          builder: (_) => const LearnPage()),
                     ),
                     style: outlineButtonStyle(),
                     icon: const Icon(Icons.menu_book_rounded, size: 18),

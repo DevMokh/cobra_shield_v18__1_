@@ -15,21 +15,21 @@ import 'package:cobra_shield/services/url_report.dart';
 void main() {
   group('روابط مشبوهة', () {
     const suspicious = <String>[
-    'https://evil-site.com/paypal/login',
-    'https://xkqzrtvbnmpl.top/a',
-    'https://a8392kd04x1zq.com/verify',
-    'http://vodafone-egypt.update-line.xyz',
-    'https://paypal.com.account-verify.xyz/login',
-    'https://paypa1.com/signin',
-    'https://secure-amazon.eg.login-check.com/ap/signin',
-    'https://www.arnazon.com/orders',
-    'https://sites.google.com/view/bank-login-update',
-    'https://mail.google.com@evil-login.com/inbox',
-    'http://nbe-secure-login.top/verify',
-    'https://google.pw/login',
-    'https://аpple.com/id',
-    'https://dhl-parcel-redelivery.top/pay',
-    'https://noon-verify-account.xyz/login',
+      'https://evil-site.com/paypal/login',
+      'https://xkqzrtvbnmpl.top/a',
+      'https://a8392kd04x1zq.com/verify',
+      'http://vodafone-egypt.update-line.xyz',
+      'https://paypal.com.account-verify.xyz/login',
+      'https://paypa1.com/signin',
+      'https://secure-amazon.eg.login-check.com/ap/signin',
+      'https://www.arnazon.com/orders',
+      'https://sites.google.com/view/bank-login-update',
+      'https://mail.google.com@evil-login.com/inbox',
+      'http://nbe-secure-login.top/verify',
+      'https://google.pw/login',
+      'https://аpple.com/id',
+      'https://dhl-parcel-redelivery.top/pay',
+      'https://noon-verify-account.xyz/login',
     ];
     for (final u in suspicious) {
       test(u, () {
@@ -41,26 +41,26 @@ void main() {
 
   group('روابط سليمة', () {
     const legit = <String>[
-    'https://www.bbc.com/news/facebook-account-changes',
-    'https://www.theguardian.com/technology/amazon-prime-day',
-    'https://medium.com/@x/why-paypal-won',
-    'https://ar.wikipedia.org/wiki/مصر',
-    'https://www.amazon.eg/gp/help/customer/display.html',
-    'https://support.apple.com/ar-eg',
-    'https://www.google.com',
-    'https://www.google.de/search?q=x',
-    'https://amazon.co.uk/orders',
-    'https://apple-pie-recipes.com/best',
-    'https://orange-juice-shop.com',
-    'https://accounts.google.com/signin/v2',
-    'https://www.paypal.com/myaccount/summary',
-    'https://www.facebook.com/login',
-    'https://www.microsoft.com/en-us/security',
-    'https://news.ycombinator.com/item?id=1',
-    'https://stackoverflow.com/questions/1',
-    'https://dhl.de/track',
-    'https://www.noon.com/egypt-ar/',
-    'https://zoom.us/j/123',
+      'https://www.bbc.com/news/facebook-account-changes',
+      'https://www.theguardian.com/technology/amazon-prime-day',
+      'https://medium.com/@x/why-paypal-won',
+      'https://ar.wikipedia.org/wiki/مصر',
+      'https://www.amazon.eg/gp/help/customer/display.html',
+      'https://support.apple.com/ar-eg',
+      'https://www.google.com',
+      'https://www.google.de/search?q=x',
+      'https://amazon.co.uk/orders',
+      'https://apple-pie-recipes.com/best',
+      'https://orange-juice-shop.com',
+      'https://accounts.google.com/signin/v2',
+      'https://www.paypal.com/myaccount/summary',
+      'https://www.facebook.com/login',
+      'https://www.microsoft.com/en-us/security',
+      'https://news.ycombinator.com/item?id=1',
+      'https://stackoverflow.com/questions/1',
+      'https://dhl.de/track',
+      'https://www.noon.com/egypt-ar/',
+      'https://zoom.us/j/123',
     ];
     for (final u in legit) {
       test(u, () {
@@ -91,7 +91,8 @@ void main() {
       });
     }
 
-    test('الإشارات الضعيفة المتراكمة بتتقصّ عند السقف (rawScore أعلى من score)', () {
+    test('الإشارات الضعيفة المتراكمة بتتقصّ عند السقف (rawScore أعلى من score)',
+        () {
       // http (3) + امتداد .top (5) + دومين فرعي متعدد (3) + شرطات (3) = 14 > سقف 12
       final rep = UrlAnalyzer.report('http://a-b-c-d.x.y.top/');
       expect(rep.rawScore, 14);
@@ -100,7 +101,8 @@ void main() {
       expect(rep.tier, ThreatTier.safe);
     });
 
-    test('إشارة ضعيفة + إشارة قوية = المجموع بيتحسب (الضعيفة ما بتلغيش القوية)', () {
+    test('إشارة ضعيفة + إشارة قوية = المجموع بيتحسب (الضعيفة ما بتلغيش القوية)',
+        () {
       // دومين عشوائي (15 قوية) + .top (5 ضعيفة) = 20 = حد "مشبوه"
       final r = UrlAnalyzer.analyze('https://xkqzrtvbnmpl.top/a');
       expect(r.score, 20);
@@ -191,7 +193,8 @@ void main() {
       test(u.replaceAll('\n', r'\n'), () {
         final r = UrlAnalyzer.analyze(u);
         expect(r.level.index, greaterThanOrEqualTo(min.index),
-            reason: 'score=${r.score} ${r.findings.map((f) => f.code).toList()}');
+            reason:
+                'score=${r.score} ${r.findings.map((f) => f.code).toList()}');
         expect(r.findings.any((f) => f.code == 'analysis_failed'), isFalse);
       });
     }
@@ -213,7 +216,8 @@ void main() {
     }
   });
 
-  test('الفشل الداخلي مش بيتحسب آمن: كل الأمثلة القديمة بدون analysis_failed', () {
+  test('الفشل الداخلي مش بيتحسب آمن: كل الأمثلة القديمة بدون analysis_failed',
+      () {
     const all = <String>[
       'https://www.google.com',
       'https://evil-site.com/paypal/login',
@@ -221,7 +225,10 @@ void main() {
       'https://mail.google.com@evil-login.com/inbox',
     ];
     for (final u in all) {
-      expect(UrlAnalyzer.analyze(u).findings.any((f) => f.code == 'analysis_failed'),
+      expect(
+          UrlAnalyzer.analyze(u)
+              .findings
+              .any((f) => f.code == 'analysis_failed'),
           isFalse,
           reason: u);
     }
@@ -231,19 +238,24 @@ void main() {
     int w(String url, String code) {
       final r = UrlAnalyzer.analyze(url);
       final hits = r.findings.where((f) => f.code == code).toList();
-      expect(hits, isNotEmpty, reason: '$url -> ${r.findings.map((f) => f.code).toList()}');
+      expect(hits, isNotEmpty,
+          reason: '$url -> ${r.findings.map((f) => f.code).toList()}');
       return hits.first.points;
     }
 
     test('IP مباشر +30', () => expect(w('https://8.8.8.8/', 'ip_host'), 30));
-    test('IP مموّه +35', () => expect(w('https://0x08080808/', 'ip_obfuscated'), 35));
+    test('IP مموّه +35',
+        () => expect(w('https://0x08080808/', 'ip_obfuscated'), 35));
     test('@ +35', () => expect(w('https://a@evil.com/', 'userinfo_at'), 35));
-    test('Homograph +25', () => expect(w('https://аpple.com/', 'homograph'), 25));
+    test('Homograph +25',
+        () => expect(w('https://аpple.com/', 'homograph'), 25));
     test('مستويات فرعية كثيرة +15', () {
       expect(w('https://a.b.c.d.e.evil.com/', 'many_subdomains'), 15);
     });
     test('كلمات حساسة كثيرة +15', () {
-      expect(w('https://evil.com/login/verify/account/update', 'keyword_stuffing'), 15);
+      expect(
+          w('https://evil.com/login/verify/account/update', 'keyword_stuffing'),
+          15);
     });
   });
 
@@ -262,16 +274,21 @@ void main() {
     });
 
     test('JSON', () {
-      final j = UrlAnalyzer.report('https://paypal.com%2F@evil.com/login').toJson();
+      final j =
+          UrlAnalyzer.report('https://paypal.com%2F@evil.com/login').toJson();
       expect(j['tier'], 'dangerous');
       expect(j['clean_url'], contains('evil.com'));
       final flags = j['flags'] as List<Object?>;
       expect(flags, isNotEmpty);
       final first = flags.first as Map<String, Object?>;
-      expect(first.keys, containsAll(<String>['code', 'severity', 'title', 'explanation', 'weight']));
+      expect(
+          first.keys,
+          containsAll(
+              <String>['code', 'severity', 'title', 'explanation', 'weight']));
     });
 
-    test('رابط مكسور: إدخال غير صالح (بدون درجة ولا tier) وما بيرميش استثناء', () {
+    test('رابط مكسور: إدخال غير صالح (بدون درجة ولا tier) وما بيرميش استثناء',
+        () {
       const cases = <String, String>{
         'https://': 'incomplete_url',
         'http://exa<mple.com': 'invalid_host',
@@ -286,7 +303,8 @@ void main() {
         expect(rep.tier, isNull, reason: u);
         expect(rep.level, isNull, reason: u);
         expect(rep.score, 0, reason: u);
-        expect(rep.flags.any((x) => x.code == 'invalid_input_$code'), isTrue, reason: u);
+        expect(rep.flags.any((x) => x.code == 'invalid_input_$code'), isTrue,
+            reason: u);
       });
     });
 

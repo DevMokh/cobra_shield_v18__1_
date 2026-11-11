@@ -27,19 +27,22 @@ void main() {
   File feedFile() => File('${dir.path}/cobra_openphish.txt');
 
   void respond(HttpResult Function() make) {
-    httpOverride = (String method, Uri uri, {Map<String, String>? headers, String? body}) async {
+    httpOverride = (String method, Uri uri,
+        {Map<String, String>? headers, String? body}) async {
       expect(method, 'GET');
       expect(uri.scheme, 'https');
       return make();
     };
   }
 
-  Future<FeedUpdateReport> updateWith(ThreatFeed f, String body, {int status = 200, bool truncated = false}) {
+  Future<FeedUpdateReport> updateWith(ThreatFeed f, String body,
+      {int status = 200, bool truncated = false}) {
     respond(() => HttpResult(status, body, truncated: truncated));
     return f.update();
   }
 
-  test('تحديث ناجح: تقرير كامل، يحمّل ويحفظ الملف ومفيش ملف مؤقت متبقي', () async {
+  test('تحديث ناجح: تقرير كامل، يحمّل ويحفظ الملف ومفيش ملف مؤقت متبقي',
+      () async {
     final f = newFeed();
     final rep = await updateWith(f, _good);
     expect(rep.status, FeedUpdateStatus.updated);
@@ -108,7 +111,9 @@ https://different.phish.top/path
     expect(rep.status, FeedUpdateStatus.updated);
   });
 
-  test('instance جديدة (إعادة تشغيل) تقرأ الملف المحفوظ ووقت آخر تحديث من الميتاداتا', () async {
+  test(
+      'instance جديدة (إعادة تشغيل) تقرأ الملف المحفوظ ووقت آخر تحديث من الميتاداتا',
+      () async {
     final first = newFeed();
     final rep = await updateWith(first, _good);
     expect(rep.persisted, isTrue);
@@ -117,14 +122,18 @@ https://different.phish.top/path
     await again.load();
     expect(again.count, 3);
     expect(again.memoryOnly, isFalse);
-    expect(again.match('https://evil-login.example.net/verify?id=1')?.kind, 'exact');
+    expect(again.match('https://evil-login.example.net/verify?id=1')?.kind,
+        'exact');
     expect(again.updated, isNotNull);
     // وقت الميتاداتا (بالميلي ثانية) = وقت التحديث الناجح
-    expect(again.updated!.millisecondsSinceEpoch, rep.time.millisecondsSinceEpoch);
-    expect(await File('${dir.path}/cobra_openphish.meta.json').exists(), isTrue);
+    expect(
+        again.updated!.millisecondsSinceEpoch, rep.time.millisecondsSinceEpoch);
+    expect(
+        await File('${dir.path}/cobra_openphish.meta.json').exists(), isTrue);
   });
 
-  test('رد غير 200: failed، القاعدة والملف القديمين بيفضلوا زي ما هما', () async {
+  test('رد غير 200: failed، القاعدة والملف القديمين بيفضلوا زي ما هما',
+      () async {
     final f = newFeed();
     await updateWith(f, _good);
     final before = await feedFile().readAsString();
@@ -145,7 +154,8 @@ https://different.phish.top/path
     final f = newFeed();
     await updateWith(f, _good);
     final before = await feedFile().readAsString();
-    final rep = await updateWith(f, 'https://a.example.org/x\n', truncated: true);
+    final rep =
+        await updateWith(f, 'https://a.example.org/x\n', truncated: true);
     expect(rep.status, FeedUpdateStatus.rejected);
     expect(f.count, 3);
     expect(await feedFile().readAsString(), before);
@@ -170,7 +180,9 @@ https://different.phish.top/path
 
   test('خلاصة أصغر بكتير من القاعدة الكبيرة الحالية تترفض', () async {
     final f = newFeed();
-    final big = List<String>.generate(300, (i) => 'https://phish$i.example.org/p').join('\n');
+    final big =
+        List<String>.generate(300, (i) => 'https://phish$i.example.org/p')
+            .join('\n');
     var rep = await updateWith(f, big);
     expect(rep.status, FeedUpdateStatus.updated);
     expect(f.count, 300);
@@ -184,13 +196,15 @@ https://different.phish.top/path
     final f = newFeed();
     await updateWith(f, _good);
 
-    httpOverride = (String m, Uri u, {Map<String, String>? headers, String? body}) async =>
+    httpOverride = (String m, Uri u,
+            {Map<String, String>? headers, String? body}) async =>
         throw const SocketException('no route');
     var rep = await f.update();
     expect(rep.status, FeedUpdateStatus.failed);
     expect(f.lastError, 'لا يوجد اتصال بالإنترنت');
 
-    httpOverride = (String m, Uri u, {Map<String, String>? headers, String? body}) async =>
+    httpOverride = (String m, Uri u,
+            {Map<String, String>? headers, String? body}) async =>
         throw TimeoutException('slow');
     rep = await f.update();
     expect(f.lastError, 'انتهت المهلة');
@@ -198,7 +212,9 @@ https://different.phish.top/path
   });
 
   group('فشل الحفظ الدائم', () {
-    test('التنزيل نجح لكن الحفظ فشل: مش "نجاح"، التقرير يقول كده والقاعدة تتطبق في الذاكرة', () async {
+    test(
+        'التنزيل نجح لكن الحفظ فشل: مش "نجاح"، التقرير يقول كده والقاعدة تتطبق في الذاكرة',
+        () async {
       // نخلّي مجلد التخزين مسار ملف عادي (مينفعش يتعمل كمجلد) => الكتابة بتفشل.
       final blocker = File('${dir.path}/not_a_dir');
       await blocker.writeAsString('x');

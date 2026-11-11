@@ -45,7 +45,8 @@ class AdvancedReport {
           code: 'redirect_to_internal',
           severity: Severity.danger,
           title: 'الرابط بيحوّل لوجهة داخلية أو غير آمنة',
-          detail: '${expand.error ?? ''}\nرابط خارجي بيوجّه لعنوان محلي/داخلي أسلوب هجوم معروف.',
+          detail:
+              '${expand.error ?? ''}\nرابط خارجي بيوجّه لعنوان محلي/داخلي أسلوب هجوم معروف.',
           points: AdvancedScanner.blockedRedirectPoints,
         ),
       ]);
@@ -180,7 +181,8 @@ class AdvancedScanner {
         add += f.points;
       }
     }
-    final base = fin != null && fin.score > local.score ? fin.score : local.score;
+    final base =
+        fin != null && fin.score > local.score ? fin.score : local.score;
     var combined = base + add;
     if (combined < 0) combined = 0;
     if (combined > 100) combined = 100;

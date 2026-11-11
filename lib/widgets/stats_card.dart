@@ -53,7 +53,8 @@ class StatsCard extends StatelessWidget {
           children: [
             Text(
               '$n',
-              style: TextStyle(color: c, fontWeight: FontWeight.w900, fontSize: 22),
+              style: TextStyle(
+                  color: c, fontWeight: FontWeight.w900, fontSize: 22),
             ),
             const SizedBox(height: 2),
             Text(label, style: const TextStyle(color: C.muted, fontSize: 12)),

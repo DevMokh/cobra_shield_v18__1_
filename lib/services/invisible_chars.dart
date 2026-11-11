@@ -227,7 +227,8 @@ class InvisibleChars {
           }
         } else {
           embedDepth++;
-          if (!isBidiOverride(r)) unbalancedMarks.add(r); // يتأكد لاحقًا لو اتقفل
+          if (!isBidiOverride(r))
+            unbalancedMarks.add(r); // يتأكد لاحقًا لو اتقفل
         }
         continue;
       }
@@ -351,7 +352,8 @@ class InvisibleChars {
         points: 8,
         codePoints: controls.toList()..sort(),
         title: 'محارف تحكم غير مرئية (${_list(controls)})',
-        detail: 'محارف تحكم (C0/C1) غير مألوفة في الرسائل، وبتُستخدم للتلاعب بالعرض أو تخطي الفلاتر.',
+        detail:
+            'محارف تحكم (C0/C1) غير مألوفة في الرسائل، وبتُستخدم للتلاعب بالعرض أو تخطي الفلاتر.',
       ));
     }
     if (formats.isNotEmpty) {
@@ -361,7 +363,8 @@ class InvisibleChars {
         points: 8,
         codePoints: formats.toList()..sort(),
         title: 'محارف تنسيق مهجورة (${_list(formats)})',
-        detail: 'محارف تحكم تنسيق مهجورة (U+206A..206F) لا يستخدمها أي تطبيق حديث، ووجودها غير طبيعي.',
+        detail:
+            'محارف تحكم تنسيق مهجورة (U+206A..206F) لا يستخدمها أي تطبيق حديث، ووجودها غير طبيعي.',
       ));
     }
 

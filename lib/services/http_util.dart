@@ -116,7 +116,8 @@ Future<HttpResult> httpRequest(
           throw const HttpException('redirect location too long');
         }
         final next = current.resolve(loc);
-        if (next.host != current.host) sendHeaders = null; // مفيش تسريب مفاتيح لمضيف تاني
+        if (next.host != current.host)
+          sendHeaders = null; // مفيش تسريب مفاتيح لمضيف تاني
         if (code == 301 || code == 302 || code == 303) {
           if (verb != 'GET' && verb != 'HEAD') verb = 'GET';
           payload = null;

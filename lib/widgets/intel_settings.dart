@@ -16,8 +16,8 @@ class IntelSettingsPanel extends StatefulWidget {
 class _IntelSettingsPanelState extends State<IntelSettingsPanel> {
   final TextEditingController _gsb = TextEditingController();
   final TextEditingController _vt = TextEditingController();
-  late final Listenable _merged =
-      Listenable.merge(<Listenable>[ThreatFeed.instance, SettingsStore.instance]);
+  late final Listenable _merged = Listenable.merge(
+      <Listenable>[ThreatFeed.instance, SettingsStore.instance]);
   bool _hide = true;
 
   @override
@@ -42,7 +42,8 @@ class _IntelSettingsPanelState extends State<IntelSettingsPanel> {
 
   Future<void> _saveKeys() async {
     FocusScope.of(context).unfocus();
-    final saved = await SettingsStore.instance.setKeys(gsb: _gsb.text, vt: _vt.text);
+    final saved =
+        await SettingsStore.instance.setKeys(gsb: _gsb.text, vt: _vt.text);
     if (!mounted) return;
     toast(
       context,
@@ -60,7 +61,8 @@ class _IntelSettingsPanelState extends State<IntelSettingsPanel> {
       enableSuggestions: false,
       textDirection: TextDirection.ltr,
       textAlign: TextAlign.left,
-      style: const TextStyle(fontFamily: 'monospace', color: C.text, fontSize: 13),
+      style:
+          const TextStyle(fontFamily: 'monospace', color: C.text, fontSize: 13),
       decoration: fieldDecoration(hint: label),
     );
   }
@@ -91,7 +93,8 @@ class _IntelSettingsPanelState extends State<IntelSettingsPanel> {
                 onChanged: (v) => SettingsStore.instance.setIntelConsent(v),
                 title: const Text(
                   'السماح بالفحص المتقدم عبر الإنترنت',
-                  style: TextStyle(color: C.text, fontSize: 14, fontWeight: FontWeight.w700),
+                  style: TextStyle(
+                      color: C.text, fontSize: 14, fontWeight: FontWeight.w700),
                 ),
                 subtitle: const Text(
                   'يتصل بالرابط نفسه ويرسل الدومين لـ RDAP، والرابط الكامل لـ Google/VirusTotal إن أضفت مفاتيحهم. أوقفه وما يتبعت شيء.',
@@ -101,7 +104,8 @@ class _IntelSettingsPanelState extends State<IntelSettingsPanel> {
               const SizedBox(height: 8),
               Row(
                 children: [
-                  const Icon(Icons.shield_moon_rounded, color: C.emerald, size: 22),
+                  const Icon(Icons.shield_moon_rounded,
+                      color: C.emerald, size: 22),
                   const SizedBox(width: 10),
                   Expanded(
                     child: Column(
@@ -119,7 +123,8 @@ class _IntelSettingsPanelState extends State<IntelSettingsPanel> {
                           feed.count == 0
                               ? 'غير محمّلة'
                               : '${feed.count} رابط${updated != null ? ' - آخر تحديث ناجح محفوظ: ${fmtTime(updated)}' : ''}',
-                          style: const TextStyle(color: C.muted, fontSize: 12.5),
+                          style:
+                              const TextStyle(color: C.muted, fontSize: 12.5),
                         ),
                         const Text(
                           'المصدر: OpenPhish Community Feed',
@@ -133,7 +138,8 @@ class _IntelSettingsPanelState extends State<IntelSettingsPanel> {
                         if (feed.lastReport != null && !feed.lastReport!.ok)
                           Text(
                             feed.lastReport!.summary,
-                            style: const TextStyle(color: C.amber, fontSize: 12, height: 1.4),
+                            style: const TextStyle(
+                                color: C.amber, fontSize: 12, height: 1.4),
                           ),
                       ],
                     ),
@@ -162,7 +168,8 @@ class _IntelSettingsPanelState extends State<IntelSettingsPanel> {
                   ),
                   child: Row(
                     children: [
-                      const Icon(Icons.warning_amber_rounded, color: C.amber, size: 18),
+                      const Icon(Icons.warning_amber_rounded,
+                          color: C.amber, size: 18),
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
@@ -202,7 +209,9 @@ class _IntelSettingsPanelState extends State<IntelSettingsPanel> {
                 child: TextButton.icon(
                   onPressed: () => setState(() => _hide = !_hide),
                   icon: Icon(
-                    _hide ? Icons.visibility_rounded : Icons.visibility_off_rounded,
+                    _hide
+                        ? Icons.visibility_rounded
+                        : Icons.visibility_off_rounded,
                     size: 18,
                   ),
                   label: Text(_hide ? 'إظهار' : 'إخفاء'),

@@ -39,7 +39,9 @@ void main() {
 void qualityTests() {
   group('assessOcrQuality', () {
     test('نص عربي/إنجليزي عادي = good', () {
-      expect(assessOcrQuality('مرحبا بك في خدمة العملاء، رابط http://a.example.com'),
+      expect(
+          assessOcrQuality(
+              'مرحبا بك في خدمة العملاء، رابط http://a.example.com'),
           OcrQuality.good);
     });
     test('فاضي أو رموز فقط = empty', () {
@@ -52,13 +54,16 @@ void qualityTests() {
       expect(assessOcrQuality('شكرا لك'), OcrQuality.low);
     });
     test('ثقة منخفضة = low حتى لو النص طويل', () {
-      expect(assessOcrQuality('مرحبا بك في خدمة العملاء الرسمية', confidence: 40),
+      expect(
+          assessOcrQuality('مرحبا بك في خدمة العملاء الرسمية', confidence: 40),
           OcrQuality.low);
-      expect(assessOcrQuality('مرحبا بك في خدمة العملاء الرسمية', confidence: 80),
+      expect(
+          assessOcrQuality('مرحبا بك في خدمة العملاء الرسمية', confidence: 80),
           OcrQuality.good);
     });
     test('رموز غريبة كتير = low', () {
-      expect(assessOcrQuality('ab ¶¶§§ ░▒▓█ ◊◊ ab cd ef gh ■■■■■■■'), OcrQuality.low);
+      expect(assessOcrQuality('ab ¶¶§§ ░▒▓█ ◊◊ ab cd ef gh ■■■■■■■'),
+          OcrQuality.low);
     });
   });
 }

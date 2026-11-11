@@ -88,7 +88,8 @@ void main() {
     for (final s in valid) {
       test(s, () {
         final r = run(s);
-        expect(r.state, isNot(ScanState.invalidInput), reason: '${r.issueCode}');
+        expect(r.state, isNot(ScanState.invalidInput),
+            reason: '${r.issueCode}');
         expect(r.hasScore, isTrue);
       });
     }
@@ -117,7 +118,10 @@ void main() {
   });
 
   group('بروتوكولات خطيرة بتتحلل كخطر (مش "غير مدعوم")', () {
-    for (final s in <String>['javascript:alert(1)', 'data:text/html,<script>alert(1)</script>']) {
+    for (final s in <String>[
+      'javascript:alert(1)',
+      'data:text/html,<script>alert(1)</script>'
+    ]) {
       test(s, () {
         final r = run(s);
         expect(r.state, ScanState.completed);

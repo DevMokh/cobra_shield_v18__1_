@@ -18,7 +18,8 @@ class FeedMatch {
 
 /// نتيجة قراءة نص الخلاصة (قبل ما تتعتمد).
 class FeedParse {
-  FeedParse._(this.urls, this.hosts, this.domains, this.validLines, this.rejectedLines);
+  FeedParse._(
+      this.urls, this.hosts, this.domains, this.validLines, this.rejectedLines);
 
   final Set<String> urls;
   final Set<String> hosts;
@@ -90,7 +91,8 @@ class FeedUpdateReport {
 
   /// نجاح كامل: خلاصة صالحة اتنزّلت *واتحفظت*.
   bool get ok =>
-      status == FeedUpdateStatus.updated || status == FeedUpdateStatus.unchanged;
+      status == FeedUpdateStatus.updated ||
+      status == FeedUpdateStatus.unchanged;
 
   int get delta => countAfter - countBefore;
 
@@ -399,18 +401,22 @@ class ThreatFeed extends ChangeNotifier {
       } on SocketException {
         return _fail(FeedUpdateStatus.failed, now, 'لا يوجد اتصال بالإنترنت');
       } on TlsException {
-        return _fail(FeedUpdateStatus.failed, now, 'تعذر تأمين الاتصال بالمصدر (شهادة غير صالحة)');
+        return _fail(FeedUpdateStatus.failed, now,
+            'تعذر تأمين الاتصال بالمصدر (شهادة غير صالحة)');
       } on BlockedTargetException {
-        return _fail(FeedUpdateStatus.failed, now, 'تم منع الاتصال بوجهة غير آمنة');
+        return _fail(
+            FeedUpdateStatus.failed, now, 'تم منع الاتصال بوجهة غير آمنة');
       } catch (_) {
         return _fail(FeedUpdateStatus.failed, now, 'تعذر التحديث');
       }
       if (r.status != 200) {
-        return _fail(FeedUpdateStatus.failed, now, 'رد غير متوقع من السيرفر (${r.status})');
+        return _fail(FeedUpdateStatus.failed, now,
+            'رد غير متوقع من السيرفر (${r.status})');
       }
       if (r.truncated) {
         // رد مقطوع: آخر سطر ممكن يكون ناقص والقائمة غير كاملة
-        return _fail(FeedUpdateStatus.rejected, now, 'الملف أكبر من الحد المسموح، اتجاهل التحديث');
+        return _fail(FeedUpdateStatus.rejected, now,
+            'الملف أكبر من الحد المسموح، اتجاهل التحديث');
       }
       final p = parse(r.body);
       final why = validate(p, previousCount: _urls.length);
@@ -433,7 +439,8 @@ class ThreatFeed extends ChangeNotifier {
         _updated = now;
         _memoryOnly = false;
         return _finish(FeedUpdateReport(
-          status: changed ? FeedUpdateStatus.updated : FeedUpdateStatus.unchanged,
+          status:
+              changed ? FeedUpdateStatus.updated : FeedUpdateStatus.unchanged,
           countBefore: before,
           countAfter: _urls.length,
           time: now,

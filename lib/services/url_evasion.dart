@@ -144,7 +144,8 @@ class UrlEvasion {
         code: 'double_encoding',
         severity: Severity.info,
         title: 'ترميز مزدوج',
-        detail: 'جزء من الرابط مرمّز مرتين (مثل %252F). نادر في الروابط العادية.',
+        detail:
+            'جزء من الرابط مرمّز مرتين (مثل %252F). نادر في الروابط العادية.',
         points: UrlWeights.doubleEncoding,
       ));
     }
@@ -195,7 +196,8 @@ class UrlEvasion {
         code: 'defanged',
         severity: Severity.info,
         title: 'رابط مكتوب بصيغة محمية',
-        detail: 'الرابط مكتوب بشكل hxxp أو [.] لتعطيله. فكّيناه للتحليل. لا تفتحه بعد إعادة تفعيله إلا بعد التأكد.',
+        detail:
+            'الرابط مكتوب بشكل hxxp أو [.] لتعطيله. فكّيناه للتحليل. لا تفتحه بعد إعادة تفعيله إلا بعد التأكد.',
       ));
     }
   }
@@ -237,7 +239,8 @@ class UrlEvasion {
         title: ip.form == IpForm.ipv6
             ? 'الرابط يستخدم عنوان IPv6'
             : 'الرابط يستخدم عنوان IP',
-        detail: 'المواقع الحقيقية نادرًا ما تطلب بياناتك عبر عنوان IP مباشر (${ip.canonical}).',
+        detail:
+            'المواقع الحقيقية نادرًا ما تطلب بياناتك عبر عنوان IP مباشر (${ip.canonical}).',
         points: UrlWeights.ipHost,
       ));
     }
@@ -328,7 +331,8 @@ class UrlEvasion {
 
     final mixed = scans.any((s) => s.mixedScript);
     final whole = scans.any((s) => s.wholeLookalike);
-    final anyNonAscii = scans.any((s) => s.nonAscii > 0) || n.unicodeHost != n.host;
+    final anyNonAscii =
+        scans.any((s) => s.nonAscii > 0) || n.unicodeHost != n.host;
 
     Brand? lookBrand;
     if (n.skeletonHost != n.unicodeHost && officialBrandOf(n.host) == null) {
@@ -337,7 +341,8 @@ class UrlEvasion {
 
     final reasons = <String>[];
     if (mixed) {
-      reasons.add('يخلط حروفًا من أنظمة كتابة مختلفة (مثل لاتيني + سيريلي) تبدو متطابقة');
+      reasons.add(
+          'يخلط حروفًا من أنظمة كتابة مختلفة (مثل لاتيني + سيريلي) تبدو متطابقة');
     }
     if (whole) {
       reasons.add('كل حروفه غير اللاتينية لها شبيه لاتيني فيظهر كاسم عادي');
@@ -378,7 +383,8 @@ class UrlEvasion {
         code: 'bad_punycode',
         severity: Severity.warn,
         title: 'ترميز Punycode غير صالح',
-        detail: 'الدومين فيه جزء xn-- لا يمكن فكه. الدومينات السليمة لا تحتوي هذا.',
+        detail:
+            'الدومين فيه جزء xn-- لا يمكن فكه. الدومينات السليمة لا تحتوي هذا.',
         points: UrlWeights.badPunycode,
       ));
     }
@@ -391,7 +397,8 @@ class UrlEvasion {
       code: 'invalid_url',
       severity: Severity.warn,
       title: 'شكل الرابط غير صالح',
-      detail: 'السبب: $why. الرابط بهذا الشكل لن يفتحه المتصفح كما هو، وغالبًا هو مكتوب بشكل مقصود أو مكسور.',
+      detail:
+          'السبب: $why. الرابط بهذا الشكل لن يفتحه المتصفح كما هو، وغالبًا هو مكتوب بشكل مقصود أو مكسور.',
       points: UrlWeights.invalidUrl,
     ));
   }

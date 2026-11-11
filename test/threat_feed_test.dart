@@ -28,7 +28,8 @@ void main() {
     });
 
     test('يرفض الأسطر اللي مش روابط http(s)', () {
-      final p = ThreatFeed.parse('$_good\nnot a url line\nftp://x.example.org/a\n');
+      final p =
+          ThreatFeed.parse('$_good\nnot a url line\nftp://x.example.org/a\n');
       expect(p.validLines, 3);
       expect(p.rejectedLines, 2);
     });
@@ -36,11 +37,13 @@ void main() {
 
   group('ThreatFeed.validate', () {
     test('خلاصة سليمة تتقبل', () {
-      expect(ThreatFeed.validate(ThreatFeed.parse(_good), previousCount: 0), isNull);
+      expect(ThreatFeed.validate(ThreatFeed.parse(_good), previousCount: 0),
+          isNull);
     });
 
     test('فاضية أو صفحة HTML أو أغلبها أسطر غير صالحة تترفض', () {
-      expect(ThreatFeed.validate(ThreatFeed.parse(''), previousCount: 0), isNotNull);
+      expect(ThreatFeed.validate(ThreatFeed.parse(''), previousCount: 0),
+          isNotNull);
       expect(
         ThreatFeed.validate(
           ThreatFeed.parse('<html>\n<body>Error</body>\n</html>\n'),
@@ -50,7 +53,8 @@ void main() {
       );
       // 3 صالح + 1 غير صالح = 75% (أقل من 80%)
       expect(
-        ThreatFeed.validate(ThreatFeed.parse('$_good\nnot a url line\n'), previousCount: 0),
+        ThreatFeed.validate(ThreatFeed.parse('$_good\nnot a url line\n'),
+            previousCount: 0),
         isNotNull,
       );
     });
@@ -68,7 +72,8 @@ void main() {
       final f = ThreatFeed.instance;
       expect(f.applyBody(_good), isNull);
       expect(f.count, 3);
-      expect(f.match('https://evil-login.example.net/verify?id=1')?.kind, 'exact');
+      expect(
+          f.match('https://evil-login.example.net/verify?id=1')?.kind, 'exact');
       expect(f.match('https://evil-login.example.net/other')?.kind, 'host');
       expect(f.match('https://sub.example.net/')?.kind, 'domain');
       expect(f.match('https://unrelated.example.org/'), isNull);
@@ -80,7 +85,8 @@ void main() {
       expect(f.applyBody('<html>error</html>'), isNotNull);
       expect(f.applyBody(''), isNotNull);
       expect(f.count, 3);
-      expect(f.match('https://evil-login.example.net/verify?id=1')?.kind, 'exact');
+      expect(
+          f.match('https://evil-login.example.net/verify?id=1')?.kind, 'exact');
     });
   });
 }

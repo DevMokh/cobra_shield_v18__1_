@@ -12,13 +12,17 @@ import 'package:flutter_test/flutter_test.dart';
 const String _key = 'SECRET-KEY-12345';
 
 void mockHttp(
-  HttpResult Function(String method, Uri uri, Map<String, String>? headers, String? body) make,
+  HttpResult Function(
+          String method, Uri uri, Map<String, String>? headers, String? body)
+      make,
 ) {
-  httpOverride = (String method, Uri uri, {Map<String, String>? headers, String? body}) async =>
+  httpOverride = (String method, Uri uri,
+          {Map<String, String>? headers, String? body}) async =>
       make(method, uri, headers, body);
 }
 
-HttpResult jsonRes(int status, Object body) => HttpResult(status, jsonEncode(body));
+HttpResult jsonRes(int status, Object body) =>
+    HttpResult(status, jsonEncode(body));
 
 void main() {
   tearDown(() => httpOverride = null);
@@ -32,8 +36,10 @@ void main() {
     });
 
     test('تطابق كامل = تأكيد، تطابق مضيف = اشتباه قوي بدون تأكيد', () {
-      ThreatFeed.instance.applyBody('https://evil-login.example.net/verify?id=1\n');
-      final exact = OnlineIntel.feed('https://evil-login.example.net/verify?id=1');
+      ThreatFeed.instance
+          .applyBody('https://evil-login.example.net/verify?id=1\n');
+      final exact =
+          OnlineIntel.feed('https://evil-login.example.net/verify?id=1');
       expect(exact.status, IntelStatus.hit);
       expect(exact.findings.single.confirmed, isTrue);
       final host = OnlineIntel.feed('https://evil-login.example.net/other');
@@ -46,7 +52,8 @@ void main() {
   });
 
   group('Google Safe Browsing', () {
-    test('بدون مفتاح: "الخدمة غير مُعدّة" (مش نظيف) ومفيش طلب شبكة ولا نقاط', () async {
+    test('بدون مفتاح: "الخدمة غير مُعدّة" (مش نظيف) ومفيش طلب شبكة ولا نقاط',
+        () async {
       mockHttp((m, u, h, b) => fail('لازم ما يتصلش بدون مفتاح'));
       final r = await OnlineIntel.safeBrowsing('https://a.example.com/', '');
       expect(r.status, IntelStatus.notConfigured);
@@ -55,15 +62,23 @@ void main() {
       expect(r.message, contains('لا يعني إنه نظيف'));
     });
 
-    test('مفتاح بشكل معطوب (سطر جديد/مسافة/حروف غير ASCII): error وبدون أي طلب شبكة', () async {
+    test(
+        'مفتاح بشكل معطوب (سطر جديد/مسافة/حروف غير ASCII): error وبدون أي طلب شبكة',
+        () async {
       mockHttp((m, u, h, b) => fail('لازم ما يتبعتش مفتاح معطوب'));
-      for (final bad in <String>['abc\ndef12345', 'has space 12345', 'مفتاح-عربي-12345', 'short']) {
+      for (final bad in <String>[
+        'abc\ndef12345',
+        'has space 12345',
+        'مفتاح-عربي-12345',
+        'short'
+      ]) {
         final r = await OnlineIntel.safeBrowsing('https://a.example.com/', bad);
         expect(r.status, IntelStatus.error, reason: bad);
         expect(r.findings, isEmpty);
         expect(r.message.contains(bad), isFalse);
       }
-      final v = await OnlineIntel.virusTotal('https://a.example.com/', 'bad key with spaces');
+      final v = await OnlineIntel.virusTotal(
+          'https://a.example.com/', 'bad key with spaces');
       expect(v.status, IntelStatus.error);
     });
 
@@ -91,7 +106,8 @@ void main() {
           ],
         });
       });
-      final r = await OnlineIntel.safeBrowsing('https://bad.example.com/x', _key);
+      final r =
+          await OnlineIntel.safeBrowsing('https://bad.example.com/x', _key);
       expect(r.status, IntelStatus.hit);
       expect(r.findings.single.confirmed, isTrue);
       expect(r.findings.single.points, 80);
@@ -101,7 +117,8 @@ void main() {
       expect(r.message.contains(_key), isFalse);
     });
 
-    test('لا تطابق: clean لكن بدون نقاط، والنص يقول إنه لا يضمن الأمان', () async {
+    test('لا تطابق: clean لكن بدون نقاط، والنص يقول إنه لا يضمن الأمان',
+        () async {
       mockHttp((m, u, h, b) => jsonRes(200, <String, Object>{}));
       final r = await OnlineIntel.safeBrowsing('https://ok.example.com/', _key);
       expect(r.status, IntelStatus.clean);
@@ -111,9 +128,11 @@ void main() {
     });
 
     for (final code in <int>[400, 401, 403, 429, 500, 503]) {
-      test('رد $code = error (فشل مصدر مش "نظيف")، والمفتاح مش في الرسالة', () async {
+      test('رد $code = error (فشل مصدر مش "نظيف")، والمفتاح مش في الرسالة',
+          () async {
         mockHttp((m, u, h, b) => HttpResult(code, ''));
-        final r = await OnlineIntel.safeBrowsing('https://a.example.com/', _key);
+        final r =
+            await OnlineIntel.safeBrowsing('https://a.example.com/', _key);
         expect(r.status, IntelStatus.error);
         expect(r.findings, isEmpty);
         expect(r.message.contains(_key), isFalse);
@@ -122,21 +141,33 @@ void main() {
 
     test('رد JSON معطوب وأخطاء الشبكة = error', () async {
       mockHttp((m, u, h, b) => const HttpResult(200, '{not json'));
-      expect((await OnlineIntel.safeBrowsing('https://a.example.com/', _key)).status,
+      expect(
+          (await OnlineIntel.safeBrowsing('https://a.example.com/', _key))
+              .status,
           IntelStatus.error);
-      httpOverride = (String m, Uri u, {Map<String, String>? headers, String? body}) async =>
+      httpOverride = (String m, Uri u,
+              {Map<String, String>? headers, String? body}) async =>
           throw const SocketException('x');
-      expect((await OnlineIntel.safeBrowsing('https://a.example.com/', _key)).status,
+      expect(
+          (await OnlineIntel.safeBrowsing('https://a.example.com/', _key))
+              .status,
           IntelStatus.error);
-      httpOverride = (String m, Uri u, {Map<String, String>? headers, String? body}) async =>
+      httpOverride = (String m, Uri u,
+              {Map<String, String>? headers, String? body}) async =>
           throw TimeoutException('x');
-      expect((await OnlineIntel.safeBrowsing('https://a.example.com/', _key)).status,
+      expect(
+          (await OnlineIntel.safeBrowsing('https://a.example.com/', _key))
+              .status,
           IntelStatus.error);
     });
   });
 
   group('VirusTotal', () {
-    Object stats({int mal = 0, int sus = 0, int harmless = 60, int undetected = 10}) =>
+    Object stats(
+            {int mal = 0,
+            int sus = 0,
+            int harmless = 60,
+            int undetected = 10}) =>
         <String, Object>{
           'data': <String, Object>{
             'attributes': <String, Object>{
@@ -202,10 +233,13 @@ void main() {
 
     test('404 (لم يُفحص) = info مش clean، وبدون نتايج تحليل = info', () async {
       mockHttp((m, u, h, b) => const HttpResult(404, ''));
-      expect((await OnlineIntel.virusTotal('https://a.example.com/', _key)).status,
+      expect(
+          (await OnlineIntel.virusTotal('https://a.example.com/', _key)).status,
           IntelStatus.info);
-      mockHttp((m, u, h, b) => jsonRes(200, <String, Object>{'data': <String, Object>{}}));
-      expect((await OnlineIntel.virusTotal('https://a.example.com/', _key)).status,
+      mockHttp((m, u, h, b) =>
+          jsonRes(200, <String, Object>{'data': <String, Object>{}}));
+      expect(
+          (await OnlineIntel.virusTotal('https://a.example.com/', _key)).status,
           IntelStatus.info);
     });
 
@@ -242,11 +276,14 @@ void main() {
 
     test('دومين عمره 15 يوم = 30، و60 يوم = 15، و200 يوم = 5', () async {
       mockHttp((m, u, h, b) => registeredDaysAgo(15));
-      expect((await OnlineIntel.rdap('a.example.com')).findings.single.points, 30);
+      expect(
+          (await OnlineIntel.rdap('a.example.com')).findings.single.points, 30);
       mockHttp((m, u, h, b) => registeredDaysAgo(60));
-      expect((await OnlineIntel.rdap('a.example.com')).findings.single.points, 15);
+      expect(
+          (await OnlineIntel.rdap('a.example.com')).findings.single.points, 15);
       mockHttp((m, u, h, b) => registeredDaysAgo(200));
-      expect((await OnlineIntel.rdap('a.example.com')).findings.single.points, 5);
+      expect(
+          (await OnlineIntel.rdap('a.example.com')).findings.single.points, 5);
     });
 
     test('دومين قديم: clean بدون نقاط', () async {
@@ -256,7 +293,8 @@ void main() {
       expect(r.findings.single.points, 0);
     });
 
-    test('الطلب بيروح لـ rdap.org بمسار الدومين فقط (مفيش الرابط الكامل)', () async {
+    test('الطلب بيروح لـ rdap.org بمسار الدومين فقط (مفيش الرابط الكامل)',
+        () async {
       late Uri seen;
       mockHttp((m, u, h, b) {
         seen = u;
@@ -271,7 +309,16 @@ void main() {
 
     test('اسم غير ASCII أو غير قياسي ما بيتبعتش: skipped بدون شبكة', () async {
       mockHttp((m, u, h, b) => fail('لازم ما يتصلش'));
-      for (final d in <String>['مثال.com', 'a b.com', 'a/b.com', 'example', '', 'a..com', '-a.com', '8.8.8.8']) {
+      for (final d in <String>[
+        'مثال.com',
+        'a b.com',
+        'a/b.com',
+        'example',
+        '',
+        'a..com',
+        '-a.com',
+        '8.8.8.8'
+      ]) {
         final r = await OnlineIntel.rdap(d);
         expect(r.status, IntelStatus.skipped, reason: d);
       }
@@ -283,13 +330,17 @@ void main() {
       expect(r.status, IntelStatus.clean);
     });
 
-    test('فشل RDAP (مهلة/شبكة) = error بدون نقاط (مفيش نقاط عشوائية عند فشل مصدر خارجي)', () async {
-      httpOverride = (String m, Uri u, {Map<String, String>? headers, String? body}) async =>
+    test(
+        'فشل RDAP (مهلة/شبكة) = error بدون نقاط (مفيش نقاط عشوائية عند فشل مصدر خارجي)',
+        () async {
+      httpOverride = (String m, Uri u,
+              {Map<String, String>? headers, String? body}) async =>
           throw TimeoutException('x');
       final t = await OnlineIntel.rdap('a.example.com');
       expect(t.status, IntelStatus.error);
       expect(t.findings, isEmpty);
-      httpOverride = (String m, Uri u, {Map<String, String>? headers, String? body}) async =>
+      httpOverride = (String m, Uri u,
+              {Map<String, String>? headers, String? body}) async =>
           throw const SocketException('x');
       final n = await OnlineIntel.rdap('a.example.com');
       expect(n.status, IntelStatus.error);
@@ -298,11 +349,15 @@ void main() {
 
     test('404 / بدون تاريخ = skipped، و500 = error', () async {
       mockHttp((m, u, h, b) => const HttpResult(404, ''));
-      expect((await OnlineIntel.rdap('a.example.com')).status, IntelStatus.skipped);
-      mockHttp((m, u, h, b) => jsonRes(200, <String, Object>{'events': <Object>[]}));
-      expect((await OnlineIntel.rdap('a.example.com')).status, IntelStatus.skipped);
+      expect((await OnlineIntel.rdap('a.example.com')).status,
+          IntelStatus.skipped);
+      mockHttp(
+          (m, u, h, b) => jsonRes(200, <String, Object>{'events': <Object>[]}));
+      expect((await OnlineIntel.rdap('a.example.com')).status,
+          IntelStatus.skipped);
       mockHttp((m, u, h, b) => const HttpResult(500, ''));
-      expect((await OnlineIntel.rdap('a.example.com')).status, IntelStatus.error);
+      expect(
+          (await OnlineIntel.rdap('a.example.com')).status, IntelStatus.error);
     });
   });
 }

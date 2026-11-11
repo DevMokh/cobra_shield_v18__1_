@@ -262,7 +262,8 @@ class _QuizPageState extends State<QuizPage> {
               const SizedBox(height: 6),
               Text(
                 sc.explanation,
-                style: const TextStyle(color: C.text, height: 1.6, fontSize: 14),
+                style:
+                    const TextStyle(color: C.text, height: 1.6, fontSize: 14),
               ),
               if (sc.clues.isNotEmpty) ...[
                 const SizedBox(height: 10),

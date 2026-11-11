@@ -4,7 +4,10 @@ import 'package:flutter_test/flutter_test.dart';
 
 // المقياس الموحّد: حدود المستويات، تجميع الإشارات (aggregateScore)، وحالات الحكم.
 // القيم متتبّعة يدويًا من models.dart؛ أول تشغيل فعلي في الـ CI.
-Finding _f(String code, int points, {String family = '', Severity sev = Severity.warn, bool confirmed = false}) =>
+Finding _f(String code, int points,
+        {String family = '',
+        Severity sev = Severity.warn,
+        bool confirmed = false}) =>
     Finding(
       severity: sev,
       title: code,
@@ -51,7 +54,12 @@ void main() {
 
     test('عنصر السجل بيستخدم نفس الحدود', () {
       for (final s in <int>[0, 19, 20, 44, 45, 69, 70, 100]) {
-        final h = HistoryItem(id: 1, kind: ScanKind.url, title: 't', score: s, time: DateTime(2026));
+        final h = HistoryItem(
+            id: 1,
+            kind: ScanKind.url,
+            title: 't',
+            score: s,
+            time: DateTime(2026));
         expect(h.level, levelForScore(s));
       }
     });
@@ -63,7 +71,8 @@ void main() {
     });
 
     test('نفس الـ code متكرر: بيتحسب مرة واحدة (الأعلى نقاطًا)', () {
-      expect(aggregateScore(<Finding>[_f('a', 10), _f('a', 25), _f('a', 5)]), 25);
+      expect(
+          aggregateScore(<Finding>[_f('a', 10), _f('a', 25), _f('a', 5)]), 25);
     });
 
     test('codes مختلفة: بتتجمع', () {
@@ -82,7 +91,12 @@ void main() {
     });
 
     test('الضعيفة تحت السقف بتتحسب زي ما هي', () {
-      expect(aggregateScore(<Finding>[_f('w1', 3, family: kFamilyWeak), _f('w2', 4, family: kFamilyWeak)]), 7);
+      expect(
+          aggregateScore(<Finding>[
+            _f('w1', 3, family: kFamilyWeak),
+            _f('w2', 4, family: kFamilyWeak)
+          ]),
+          7);
     });
 
     test('ضعيفة + قوية: القوية كاملة والضعيفة بسقفها', () {
@@ -95,12 +109,19 @@ void main() {
     });
 
     test('نفس الـ code ضعيف مكرر ما بيتضاعفش', () {
-      expect(aggregateScore(<Finding>[_f('w', 5, family: kFamilyWeak), _f('w', 5, family: kFamilyWeak)]), 5);
+      expect(
+          aggregateScore(<Finding>[
+            _f('w', 5, family: kFamilyWeak),
+            _f('w', 5, family: kFamilyWeak)
+          ]),
+          5);
     });
 
     test('إشارات بدون code (قديمة) بتتحسب كلها', () {
-      const a = Finding(severity: Severity.warn, title: 'x', detail: '', points: 7);
-      const b = Finding(severity: Severity.warn, title: 'x', detail: '', points: 7);
+      const a =
+          Finding(severity: Severity.warn, title: 'x', detail: '', points: 7);
+      const b =
+          Finding(severity: Severity.warn, title: 'x', detail: '', points: 7);
       expect(aggregateScore(const <Finding>[a, b]), 14);
     });
 
@@ -132,7 +153,8 @@ void main() {
         );
 
     test('إدخال غير صالح: مفيش درجة', () {
-      final r = ScanResult.invalid(kind: ScanKind.url, issueCode: 'not_a_url', detail: 'x');
+      final r = ScanResult.invalid(
+          kind: ScanKind.url, issueCode: 'not_a_url', detail: 'x');
       expect(r.verdict, Verdict.invalidInput);
       expect(r.hasScore, isFalse);
       expect(r.state, ScanState.invalidInput);
@@ -176,7 +198,9 @@ void main() {
 
     test('الأولوية: مشبوه يغلب الجزئي، والمؤكد يغلب كل حاجة', () {
       expect(res(score: 30, partial: true).verdict, Verdict.suspicious);
-      expect(res(partial: true, findings: <Finding>[_f('x', 0, confirmed: true)]).verdict,
+      expect(
+          res(partial: true, findings: <Finding>[_f('x', 0, confirmed: true)])
+              .verdict,
           Verdict.confirmedThreat);
     });
 
@@ -191,15 +215,22 @@ void main() {
 
     test('رابط جزئي أو غير مفحوص داخل رسالة: فحص جزئي', () {
       final partialLink = res(partial: true);
-      expect(res(links: <ScanResult>[partialLink]).verdict, Verdict.partialScan);
-      final invalidLink = ScanResult.invalid(kind: ScanKind.url, issueCode: 'invalid_host', detail: 'x');
-      expect(res(links: <ScanResult>[invalidLink]).verdict, Verdict.partialScan);
+      expect(
+          res(links: <ScanResult>[partialLink]).verdict, Verdict.partialScan);
+      final invalidLink = ScanResult.invalid(
+          kind: ScanKind.url, issueCode: 'invalid_host', detail: 'x');
+      expect(
+          res(links: <ScanResult>[invalidLink]).verdict, Verdict.partialScan);
     });
 
-    test('نصوص الحكم: "لا مؤشرات" بتنبّه إنه مش ضمان، والجزئي مش بيقول لا مؤشرات', () {
+    test(
+        'نصوص الحكم: "لا مؤشرات" بتنبّه إنه مش ضمان، والجزئي مش بيقول لا مؤشرات',
+        () {
       expect(Verdict.noIndicators.advice, contains('لا يعني أنه آمن'));
-      expect(Verdict.partialScan.advice, contains('لا نستطيع القول إنه بلا مؤشرات'));
-      expect(Verdict.insufficient.advice, contains('لا نستطيع القول إنه بلا مؤشرات'));
+      expect(Verdict.partialScan.advice,
+          contains('لا نستطيع القول إنه بلا مؤشرات'));
+      expect(Verdict.insufficient.advice,
+          contains('لا نستطيع القول إنه بلا مؤشرات'));
       for (final v in Verdict.values) {
         expect(v.label, isNotEmpty);
         expect(v.advice, isNotEmpty);

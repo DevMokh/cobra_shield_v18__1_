@@ -100,7 +100,8 @@ class _UrlScanScreenState extends State<UrlScanScreen> {
                     info.raw.length > 400
                         ? '${info.raw.substring(0, 400)}...'
                         : info.raw,
-                    style: const TextStyle(fontFamily: 'monospace', fontSize: 12),
+                    style:
+                        const TextStyle(fontFamily: 'monospace', fontSize: 12),
                   ),
                 ),
               ),
@@ -316,7 +317,8 @@ class _UrlScanScreenState extends State<UrlScanScreen> {
           const SizedBox(height: 6),
           Text(
             'يكشف الوجهة الحقيقية، وعمر الدومين، ويقارنه بقوائم التهديدات. المصادر الآن: ${sources.join(' + ')}.',
-            style: const TextStyle(color: C.muted, fontSize: 12.5, height: 1.45),
+            style:
+                const TextStyle(color: C.muted, fontSize: 12.5, height: 1.45),
           ),
           const SizedBox(height: 10),
           if (_running) ...[
@@ -334,7 +336,8 @@ class _UrlScanScreenState extends State<UrlScanScreen> {
             const SizedBox(height: 14),
             const Text(
               'مسار الرابط',
-              style: TextStyle(color: C.text, fontWeight: FontWeight.w700, fontSize: 13.5),
+              style: TextStyle(
+                  color: C.text, fontWeight: FontWeight.w700, fontSize: 13.5),
             ),
             const SizedBox(height: 6),
             ChainView(chain: a.expand.chain),
@@ -357,7 +360,8 @@ class _UrlScanScreenState extends State<UrlScanScreen> {
             const SizedBox(height: 14),
             const Text(
               'نتائج المصادر',
-              style: TextStyle(color: C.text, fontWeight: FontWeight.w700, fontSize: 13.5),
+              style: TextStyle(
+                  color: C.text, fontWeight: FontWeight.w700, fontSize: 13.5),
             ),
             const SizedBox(height: 8),
             for (final r in a.intel) IntelTile(result: r),
@@ -366,7 +370,8 @@ class _UrlScanScreenState extends State<UrlScanScreen> {
                 padding: const EdgeInsets.only(top: 6),
                 child: Text(
                   'فحص جزئي: تعذر ${a.failedSources.join('، ')}. النتيجة النهائية لا تشمل هذه المصادر، وفشلها لا يعني إن الرابط آمن.',
-                  style: const TextStyle(color: C.amber, fontSize: 12.5, height: 1.45),
+                  style: const TextStyle(
+                      color: C.amber, fontSize: 12.5, height: 1.45),
                 ),
               ),
           ],
@@ -394,7 +399,8 @@ class _UrlScanScreenState extends State<UrlScanScreen> {
               _inputPanel(),
               if (r != null) ...[
                 const SizedBox(height: 16),
-                ScanSummaryCard(result: r, heading: 'النتيجة الأساسية (على جهازك)'),
+                ScanSummaryCard(
+                    result: r, heading: 'النتيجة الأساسية (على جهازك)'),
                 if (r.parts != null) ...[
                   const SizedBox(height: 14),
                   UrlBreakdown(parts: r.parts!),

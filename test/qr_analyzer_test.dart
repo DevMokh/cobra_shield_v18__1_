@@ -22,7 +22,8 @@ void main() {
     });
 
     test('نص فيه رابط: بنفحص الرابط', () {
-      final q = QrAnalyzer.classify('ادفع الآن على http://pay.example.top/x ثم أكد');
+      final q =
+          QrAnalyzer.classify('ادفع الآن على http://pay.example.top/x ثم أكد');
       expect(q.kind, QrKind.url);
       expect(q.link, 'http://pay.example.top/x');
     });

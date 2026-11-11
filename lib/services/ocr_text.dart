@@ -8,7 +8,8 @@
 String cleanOcrText(String raw) {
   var s = raw.replaceAll('\r\n', '\n').replaceAll('\r', '\n');
   // محارف التحكم (ما عدا \n و \t)
-  s = s.replaceAll(RegExp(r'[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]'), '');
+  s = s.replaceAll(
+      RegExp(r'[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]'), '');
   final lines = s.split('\n').map((l) => l.replaceAll(RegExp(r'[ \t ]+$'), ''));
   final out = <String>[];
   var blank = 0;
@@ -68,7 +69,8 @@ OcrQuality assessOcrQuality(String text, {int? confidence}) {
     }
   }
   if (words < 3) return OcrQuality.empty;
-  if (confidence != null && confidence < kOcrLowConfidence) return OcrQuality.low;
+  if (confidence != null && confidence < kOcrLowConfidence)
+    return OcrQuality.low;
   if (words < 8) return OcrQuality.low;
   if (total > 0 && odd / total > 0.30) return OcrQuality.low;
   return OcrQuality.good;

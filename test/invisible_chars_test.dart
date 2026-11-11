@@ -17,7 +17,8 @@ void main() {
   group('علامات الاتجاه الطبيعية: مش تهديد', () {
     for (final r in <int>[0x200E, 0x200F, 0x061C]) {
       test('${InvisibleChars.label(r)} داخل نص عربي/إنجليزي', () {
-        final rep = InvisibleChars.analyze('مرحبا ${cp(r)}Hello${cp(r)} كيف الحال');
+        final rep =
+            InvisibleChars.analyze('مرحبا ${cp(r)}Hello${cp(r)} كيف الحال');
         expect(rep.hasIssues, isFalse);
         expect(rep.benignCount, 2);
       });
@@ -154,7 +155,8 @@ void main() {
     });
     test('صفر العرض', () {
       for (final r in <int>[0x200B, 0x2060, 0xFEFF, 0x00AD]) {
-        expect(InvisibleChars.isZeroWidth(r), isTrue, reason: InvisibleChars.label(r));
+        expect(InvisibleChars.isZeroWidth(r), isTrue,
+            reason: InvisibleChars.label(r));
       }
       expect(InvisibleChars.isZeroWidth(0x0041), isFalse);
     });
@@ -172,8 +174,12 @@ void main() {
     test('نص عربي مختلط بـ LRM/RLM: مفيش تحذير حروف خفية ولا نقاط', () {
       final r = analyze(
           'هنتقابل ${cp(0x200F)}Starbucks${cp(0x200E)} الساعة ${cp(0x200F)}5${cp(0x200E)} مساءً');
-      expect(r.findings.any((f) => f.code.startsWith('bidi_') ||
-          f.code == 'zero_width_split' || f.code == 'control_chars'), isFalse);
+      expect(
+          r.findings.any((f) =>
+              f.code.startsWith('bidi_') ||
+              f.code == 'zero_width_split' ||
+              f.code == 'control_chars'),
+          isFalse);
       expect(r.score, 0);
       expect(r.level, RiskLevel.low);
     });
@@ -187,7 +193,8 @@ void main() {
     test('RLO في رسالة: bidi_override وليس "حروف خفية" عامة', () {
       final r = analyze('الملف المرفق: report${cp(0x202E)}fdp.exe');
       expect(hasCode(r, 'bidi_override'), isTrue);
-      expect(r.findings.where((f) => f.title == 'حروف خفية داخل النص'), isEmpty);
+      expect(
+          r.findings.where((f) => f.title == 'حروف خفية داخل النص'), isEmpty);
     });
 
     test('الكلمة المقطّعة بحرف صفري لسه بتتطابق مع قاموس الإشارات', () {
@@ -198,7 +205,8 @@ void main() {
     test('RLM في آخر الرابط داخل الرسالة مش بتتحسب', () {
       final r = analyze('الرابط https://example.org/page${cp(0x200F)} شكرا');
       expect(r.links.length, 1);
-      expect(r.links.first.findings.any((f) => f.code == 'hidden_chars'), isFalse);
+      expect(
+          r.links.first.findings.any((f) => f.code == 'hidden_chars'), isFalse);
     });
   });
 

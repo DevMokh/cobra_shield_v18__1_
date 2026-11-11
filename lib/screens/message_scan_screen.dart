@@ -165,7 +165,8 @@ class _MessageScanScreenState extends State<MessageScanScreen> {
           OutlinedButton.icon(
             onPressed: () {
               Navigator.of(context).push(
-                MaterialPageRoute<void>(builder: (_) => const ImageScanScreen()),
+                MaterialPageRoute<void>(
+                    builder: (_) => const ImageScanScreen()),
               );
             },
             style: outlineButtonStyle(),
@@ -216,7 +217,8 @@ class _MessageScanScreenState extends State<MessageScanScreen> {
           ),
           subtitle: Text(
             l.hasScore ? '${l.score}/100 - ${l.level.label}' : l.headline,
-            style: TextStyle(color: c, fontWeight: FontWeight.w700, fontSize: 12.5),
+            style: TextStyle(
+                color: c, fontWeight: FontWeight.w700, fontSize: 12.5),
           ),
           children: l.findings.map((f) => FindingTile(finding: f)).toList(),
         ),
@@ -254,7 +256,8 @@ class _MessageScanScreenState extends State<MessageScanScreen> {
                     padding: EdgeInsets.only(top: 4),
                     child: Text(
                       'لا تفتح هذه الروابط من الرسالة. لو كنت تتوقع الرسالة، ادخل الموقع أو التطبيق الرسمي بنفسك.',
-                      style: TextStyle(color: C.muted, fontSize: 12.5, height: 1.5),
+                      style: TextStyle(
+                          color: C.muted, fontSize: 12.5, height: 1.5),
                     ),
                   ),
                 ],
